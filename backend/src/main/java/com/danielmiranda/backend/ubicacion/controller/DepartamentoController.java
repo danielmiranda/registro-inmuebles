@@ -1,5 +1,6 @@
 package com.danielmiranda.backend.ubicacion.controller;
 
+import com.danielmiranda.backend.common.exception.BusinessRuleException;
 import com.danielmiranda.backend.ubicacion.UbicacionResponseDTO;
 import com.danielmiranda.backend.ubicacion.mapper.UbicacionMapper;
 import com.danielmiranda.backend.ubicacion.model.Departamento;
@@ -25,10 +26,14 @@ public class DepartamentoController {
     public ResponseEntity<List<UbicacionResponseDTO.DepartamentoDTO>> findAll() {
         List<Departamento> departamentos = repository.findAll();
 
+        if (departamentos.isEmpty()) {
+            throw new BusinessRuleException("No hay información disponible");
+        }
+
         return ResponseEntity
                 .ok()
                 .body(departamentos.stream()
-                        .map(mapper::toDepartamentoInfo)
+                        .map(mapper::toDepartamentoDTO)
                         .collect(Collectors.toList()));
 
     }
