@@ -1,0 +1,95 @@
+-- DATOS PARAMETRICOS DE UBICACION
+-- PROVINCIA
+INSERT INTO provincia (id, nombre, codigo_provincia) VALUES (58, 'NEUQUÉN', 58);
+
+-- REGION
+INSERT INTO region (id, nombre, provincia_id) VALUES (1, 'Sin declarar', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (2, 'Indeterminado', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (3, 'del Pehuén', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (4, 'Vaca Muerta', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (5, 'de los Lagos del Sur', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (6, 'Alto Neuquén', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (7, 'del Limay', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (8, 'Confluencia', 58);
+INSERT INTO region (id, nombre, provincia_id) VALUES (9, 'de la Comarca', 58);
+
+-- DEPARTAMENTO
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (1, 'Sin declarar', 58999, 1);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (2, 'Indeterminado', 58998, 2);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (3, 'Aluminé', 58007, 3);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (4, 'Añelo', 58014, 4);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (5, 'Catán Lil', 58021, 3);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (7, 'Chos Malal', 58042, 6);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (8, 'Collón Curá', 58028, 7);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (9, 'Confluencia', 58035, 8);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (11, 'Huiliches', 58049, 5);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (12, 'Lácar', 58056, 5);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (13, 'Loncopué', 58063, 6);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (14, 'Los Lagos', 58070, 5);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (15, 'Minas', 58077, 6);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (16, 'Ñorquín', 58084, 6);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (17, 'Pehuenches', 58091, 4);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (18, 'Picún Leufú', 58098, 7);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (19, 'Picunches', 58105, 3);
+INSERT INTO departamento (id, nombre, codigo_departamento, region_id) VALUES (20, 'Zapala', 58112, 3);
+
+-- CIUDAD
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (1, 'Sin Gobierno Local', 580000, (SELECT id FROM departamento WHERE codigo_departamento=58999));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (2, 'Indeterminado', 589998, (SELECT id FROM departamento WHERE codigo_departamento=58998));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (3, 'Aluminé', 580007, (SELECT id FROM departamento WHERE codigo_departamento=58007));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (4, 'Villa Pehuenia', 580252, (SELECT id FROM departamento WHERE codigo_departamento=58007));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (5, 'San Patricio del Chañar', 580021, (SELECT id FROM departamento WHERE codigo_departamento=58014));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (6, 'Añelo', 580014, (SELECT id FROM departamento WHERE codigo_departamento=58014));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (7, 'Aguada San Roque', 585014, (SELECT id FROM departamento WHERE codigo_departamento=58014));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (8, 'Los Chihuidos', 585021, (SELECT id FROM departamento WHERE codigo_departamento=58014));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (9, 'Las Coloradas', 580028, (SELECT id FROM departamento WHERE codigo_departamento=58021));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (10, 'Pilo Lil', 585028, (SELECT id FROM departamento WHERE codigo_departamento=58021));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (11, 'Villa Puente Picún Leufú', 585154, (SELECT id FROM departamento WHERE codigo_departamento=58021));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (12, 'Chos Malal', 580098, (SELECT id FROM departamento WHERE codigo_departamento=58042));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (13, 'Tricao Malal', 580105, (SELECT id FROM departamento WHERE codigo_departamento=58042));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (14, 'Coyuco - Cochico', 585049, (SELECT id FROM departamento WHERE codigo_departamento=58042));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (15, 'Villa Curi Leuvú', 585056, (SELECT id FROM departamento WHERE codigo_departamento=58042));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (16, 'Piedra del Águila', 580035, (SELECT id FROM departamento WHERE codigo_departamento=58028));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (17, 'Santo Tomás', 585035, (SELECT id FROM departamento WHERE codigo_departamento=58028));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (18, 'Centenario', 580042, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (19, 'Cutral Co', 580049, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (20, 'Neuquén', 580056, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (21, 'Plaza Huincul', 580063, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (22, 'Plottier', 580070, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (23, 'Senillosa', 580077, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (24, 'Villa El Chocón', 580084, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (25, 'Vista Alegre', 580091, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (26, 'Sauzal Bonito', 585042, (SELECT id FROM departamento WHERE codigo_departamento=58035));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (27, 'Junín de los Andes', 580112, (SELECT id FROM departamento WHERE codigo_departamento=58049));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (28, 'San Martín de los Andes', 580119, (SELECT id FROM departamento WHERE codigo_departamento=58056));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (29, 'Loncopué', 580126, (SELECT id FROM departamento WHERE codigo_departamento=58063));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (30, 'Chorriaca', 585063, (SELECT id FROM departamento WHERE codigo_departamento=58063));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (31, 'Villa La Angostura', 580133, (SELECT id FROM departamento WHERE codigo_departamento=58070));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (32, 'Villa Traful', 585070, (SELECT id FROM departamento WHERE codigo_departamento=58070));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (33, 'Andacollo', 580140, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (34, 'Las Ovejas', 580154, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (35, 'Huinganco', 580147, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (36, 'Los Miches', 580161, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (37, 'Guañacos', 585077, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (38, 'Manzano Amargo', 585084, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (39, 'Varvarco - Invernada Vieja', 585091, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (40, 'Villa del Nahueve', 585098, (SELECT id FROM departamento WHERE codigo_departamento=58077));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (41, 'Caviahue - Copahue', 580168, (SELECT id FROM departamento WHERE codigo_departamento=58084));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (42, 'El Cholar', 580175, (SELECT id FROM departamento WHERE codigo_departamento=58084));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (43, 'El Huecú', 580182, (SELECT id FROM departamento WHERE codigo_departamento=58084));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (44, 'Taquimilán', 580189, (SELECT id FROM departamento WHERE codigo_departamento=58084));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (45, 'Rincón de los Sauces', 580210, (SELECT id FROM departamento WHERE codigo_departamento=58091));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (46, 'Buta Ranquil', 580203, (SELECT id FROM departamento WHERE codigo_departamento=58091));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (47, 'Barrancas', 580196, (SELECT id FROM departamento WHERE codigo_departamento=58091));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (48, 'Octavio Pico', 585105, (SELECT id FROM departamento WHERE codigo_departamento=58091));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (49, 'Picún Leufú', 580217, (SELECT id FROM departamento WHERE codigo_departamento=58098));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (50, 'El Sauce', 585112, (SELECT id FROM departamento WHERE codigo_departamento=58098));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (51, 'Paso Aguerre', 585119, (SELECT id FROM departamento WHERE codigo_departamento=58098));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (52, 'Las Lajas', 580231, (SELECT id FROM departamento WHERE codigo_departamento=58105));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (53, 'Bajada del Agrio', 580224, (SELECT id FROM departamento WHERE codigo_departamento=58105));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (54, 'Quili Malal', 585126, (SELECT id FROM departamento WHERE codigo_departamento=58105));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (55, 'Zapala', 580245, (SELECT id FROM departamento WHERE codigo_departamento=58112));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (56, 'Mariano Moreno', 580238, (SELECT id FROM departamento WHERE codigo_departamento=58112));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (57, 'Covunco Abajo', 585133, (SELECT id FROM departamento WHERE codigo_departamento=58112));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (58, 'Los Catutos', 585140, (SELECT id FROM departamento WHERE codigo_departamento=58112));
+INSERT INTO ciudad (id, nombre, codigo_ciudad, departamento_id) VALUES (59, 'Ramón M. Castro', 585147, (SELECT id FROM departamento WHERE codigo_departamento=58112));
