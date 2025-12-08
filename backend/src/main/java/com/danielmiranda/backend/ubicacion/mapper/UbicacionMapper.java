@@ -9,9 +9,9 @@ import org.mapstruct.MappingConstants;
 public interface UbicacionMapper {
     UbicacionResponseDTO toDTO(Ciudad ciudad);
 
-    UbicacionResponseDTO.DepartamentoDTO toDepartamentoInfo(Departamento departamento);
+    UbicacionResponseDTO.DepartamentoDTO toDepartamentoDTO(Departamento departamento);
 
-    UbicacionResponseDTO.RegionDTO toRegionInfo(Region region);
+    UbicacionResponseDTO.RegionDTO toRegionDTO(Region region);
 
-    UbicacionResponseDTO.ProvinciaDTO toProvinciaInfo(Provincia provincia);
+    UbicacionResponseDTO.ProvinciaDTO toProvinciaDTO(Provincia provincia);
 }
