@@ -7,7 +7,7 @@ import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UbicacionMapper {
-    UbicacionResponseDTO toDTO(Ciudad ciudad);
+    UbicacionResponseDTO.CiudadDTO toCiudadDTO(Ciudad ciudad);
 
     UbicacionResponseDTO.DepartamentoDTO toDepartamentoDTO(Departamento departamento);
 

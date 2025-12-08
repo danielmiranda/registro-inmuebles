@@ -1,10 +1,6 @@
 package com.danielmiranda.backend.ubicacion;
 
 public record UbicacionResponseDTO(
-        Long id,
-        String nombre,
-        Integer codigoCiudad,
-        DepartamentoDTO departamento
 ) {
 
     public record CiudadDTO(
