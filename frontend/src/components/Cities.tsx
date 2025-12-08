@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, Spin, Alert, Layout, Typography } from 'antd';
+import { Table, Spin, Alert, Layout, Typography, AutoComplete } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -28,6 +28,7 @@ const Cities = () => {
   const [cities, setCities] = useState<CiudadDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string>('');
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -67,6 +68,8 @@ const Cities = () => {
     },
   ];
 
+  const options = cities.map(city => ({ value: city.nombre }));
+
   if (loading) {
     return (
       <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -85,6 +88,16 @@ const Cities = () => {
 
   return (
     <Layout style={{ padding: '24px' }}>
+      <AutoComplete
+        options={options}
+        placeholder="Selecciona una ciudad"
+        onSelect={setSelectedCity}
+        style={{ width: 300, marginBottom: 16 }}
+        showSearch={{
+            filterOption: (inputValue, option) =>
+                option!.value.toUpperCase().includes(inputValue.toUpperCase()),
+        }}
+      />
       <Title level={2}>Lista de Ciudades</Title>
       <Table
         dataSource={cities}
