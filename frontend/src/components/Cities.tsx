@@ -25,10 +25,27 @@ interface CiudadDTO {
 }
 
 const Cities = () => {
-  const [cities, setCities] = useState<CiudadDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState<string>('');
+    const [cities, setCities] = useState<CiudadDTO[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [selectedCity, setSelectedCity] = useState<string>('');
+
+    const [search, setSearch] = useState("");
+
+    const handleSearch = (value) => {
+        setSearch(value);
+    };
+
+    const normalizeText = (text) => {
+        return text
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    };
+
+    const filteredData = cities.filter(item =>
+        normalizeText(item.nombre).includes(normalizeText(search))
+    );
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -90,17 +107,18 @@ const Cities = () => {
     <Layout style={{ padding: '24px' }}>
       <AutoComplete
         options={options}
-        placeholder="Selecciona una ciudad"
+        placeholder="Seleccione una ciudad"
         onSelect={setSelectedCity}
+        //onSearch={handleSearch}
         style={{ width: 300, marginBottom: 16 }}
         showSearch={{
             filterOption: (inputValue, option) =>
-                option!.value.toUpperCase().includes(inputValue.toUpperCase()),
+                normalizeText(option!.value).includes(normalizeText(inputValue)),
         }}
       />
       <Title level={2}>Lista de Ciudades</Title>
       <Table
-        dataSource={cities}
+        dataSource={filteredData}
         columns={columns}
         rowKey="id"
         pagination={{ pageSize: 10 }}
