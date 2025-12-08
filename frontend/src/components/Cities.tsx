@@ -50,7 +50,7 @@ const Cities = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/ciudades');
+        const response = await axios.get('/ciudades');
         setCities(response.data);
       } catch (err) {
         setError('Error al cargar las ciudades');
@@ -109,7 +109,7 @@ const Cities = () => {
         options={options}
         placeholder="Seleccione una ciudad"
         onSelect={setSelectedCity}
-        //onSearch={handleSearch}
+        onSearch={handleSearch}
         style={{ width: 300, marginBottom: 16 }}
         showSearch={{
             filterOption: (inputValue, option) =>

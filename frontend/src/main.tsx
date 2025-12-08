@@ -1,3 +1,4 @@
+import './api/axiosConfig'; //Configuracion de AXIOS
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ConfigProvider } from 'antd'
