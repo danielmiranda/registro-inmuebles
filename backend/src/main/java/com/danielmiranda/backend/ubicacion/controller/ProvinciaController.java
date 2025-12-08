@@ -5,6 +5,7 @@ import com.danielmiranda.backend.ubicacion.UbicacionResponseDTO;
 import com.danielmiranda.backend.ubicacion.mapper.UbicacionMapper;
 import com.danielmiranda.backend.ubicacion.model.Provincia;
 import com.danielmiranda.backend.ubicacion.repository.ProvinciaRepository;
+import com.danielmiranda.backend.ubicacion.service.UbicacionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,21 +19,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/provincias")
 @RequiredArgsConstructor
 public class ProvinciaController {
-    private final ProvinciaRepository repository;
-    private final UbicacionMapper mapper;
+    private final UbicacionService service;
 
     @GetMapping
     public ResponseEntity<List<UbicacionResponseDTO.ProvinciaDTO>> findAll() {
-        List<Provincia> provincias = repository.findAll();
 
-        if (provincias.isEmpty()) {
-            throw new BusinessRuleException("No hay información disponible");
-        }
-
-        return ResponseEntity
-                .ok()
-                .body(provincias.stream()
-                        .map(mapper::toProvinciaDTO)
-                        .collect(Collectors.toList()));
+        return ResponseEntity.ok(service.findAllProvincia());
     }
 }
