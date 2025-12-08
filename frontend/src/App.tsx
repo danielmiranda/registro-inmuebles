@@ -1,9 +1,19 @@
 import { Layout, Typography, ConfigProvider, theme, Button } from 'antd';
 import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Cities from './components/Cities';
 
 const { Title } = Typography;
 
+function Home() {
+  return (
+    <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column' }}>
+      <Title level={1}>Registro Inmuebles</Title>
+      <Link to="/ciudades">Ver Ciudades</Link>
+    </Layout>
+  );
+}
 
 function App() {
   const [isDark, setIsDark] = useState<boolean>(() => {
@@ -38,9 +48,12 @@ function App() {
           }}
         />
       </div>
-      <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-        <Title level={1}>Registro Inmuebles</Title>
-      </Layout>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/ciudades" element={<Cities />} />
+        </Routes>
+      </Router>
     </ConfigProvider>
   )
 }
