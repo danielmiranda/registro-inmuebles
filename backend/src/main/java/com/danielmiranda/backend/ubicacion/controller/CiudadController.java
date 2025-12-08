@@ -22,15 +22,16 @@ public class CiudadController {
     private final UbicacionMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<UbicacionResponseDTO>> findAll() {
+    public ResponseEntity<List<UbicacionResponseDTO.CiudadDTO>> findAll() {
         List<Ciudad> ciudades = repository.findAll();
+
         if (ciudades.isEmpty()) {
-            throw new BusinessRuleException("No hay ciudades disponibles");
+            throw new BusinessRuleException("No hay información disponible");
         }
         return ResponseEntity
                 .ok()
                 .body(ciudades.stream()
-                        .map(mapper::toDTO)
+                        .map(mapper::toCiudadDTO)
                         .collect(Collectors.toList()));
     }
 }
