@@ -69,8 +69,11 @@ docker-compose up --build
 ```
 
 * Frontend: http://localhost:5173
-* Backend API: http://localhost:8080
+* Backend API: http://localhost:8080/api/v1
 * Swagger UI: http://localhost:8080/swagger-ui.html
+* H2 Console: http://localhost:8080/h2-console/ (url=jdbc:h2:mem:registro user=sa pass=)
+
+[![](/resources/images/h2_console.png)
 
 ### Opción B: Desarrollo Local
 1. Backend:
