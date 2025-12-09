@@ -1,7 +1,7 @@
 package com.danielmiranda.backend.persona.controller;
 
 import com.danielmiranda.backend.common.exception.BusinessRuleException;
-import com.danielmiranda.backend.persona.PersonaCreateUpdateDTO;
+import com.danielmiranda.backend.persona.dto.PersonaCreateUpdateDTO;
 import com.danielmiranda.backend.persona.PersonaResponseDTO;
 import com.danielmiranda.backend.persona.service.PersonaService;
 import jakarta.validation.Valid;

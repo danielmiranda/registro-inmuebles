@@ -2,7 +2,7 @@ package com.danielmiranda.backend.persona.service;
 
 import com.danielmiranda.backend.common.exception.DuplicateResourceException;
 import com.danielmiranda.backend.common.exception.ResourceNotFoundException;
-import com.danielmiranda.backend.persona.PersonaCreateUpdateDTO;
+import com.danielmiranda.backend.persona.dto.PersonaCreateUpdateDTO;
 import com.danielmiranda.backend.persona.PersonaResponseDTO;
 import com.danielmiranda.backend.persona.mapper.PersonaMapper;
 import com.danielmiranda.backend.persona.model.Persona;

@@ -1,4 +1,4 @@
-package com.danielmiranda.backend.persona;
+package com.danielmiranda.backend.persona.dto;
 
 public record PersonaCreateUpdateDTO(
         String cuit,

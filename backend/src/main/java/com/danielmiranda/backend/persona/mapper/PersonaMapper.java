@@ -1,6 +1,6 @@
 package com.danielmiranda.backend.persona.mapper;
 
-import com.danielmiranda.backend.persona.PersonaCreateUpdateDTO;
+import com.danielmiranda.backend.persona.dto.PersonaCreateUpdateDTO;
 import com.danielmiranda.backend.persona.PersonaResponseDTO;
 import com.danielmiranda.backend.persona.model.Persona;
 import org.mapstruct.Mapper;
