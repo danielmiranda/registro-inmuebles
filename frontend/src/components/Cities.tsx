@@ -31,6 +31,7 @@ interface CitiesProps {
     options: { value: string }[];
     onSelectCity: (value: string) => void;
     onSearch: (value: string) => void;
+    onChange: (value: string) => void;
 }
 
 const normalizeText = (text: string) => {
@@ -47,7 +48,8 @@ const Cities: React.FC<CitiesProps> = ({
                                            selectedCity,
                                            options,
                                            onSelectCity,
-                                           onSearch
+                                           onSearch,
+                                           onChange
                                        }) => {
     const columns = [
         {
@@ -94,6 +96,7 @@ const Cities: React.FC<CitiesProps> = ({
                 options={options}
                 placeholder="Selecciona una ciudad"
                 onSelect={onSelectCity}
+                onChange={onChange}
                 onSearch={onSearch}
                 style={{ width: 300, marginBottom: 16 }}
                 showSearch={{
@@ -101,6 +104,11 @@ const Cities: React.FC<CitiesProps> = ({
                         normalizeText(option!.value).includes(normalizeText(inputValue)),
                 }}
             />
+            {selectedCity && (
+                <Typography.Text style={{ display: 'block', marginBottom: 16 }}>
+                    Ciudad Seleccionada: {selectedCity}
+                </Typography.Text>
+            )}
             <Title level={2}>Lista de Ciudades</Title>
             <Table
                 dataSource={cities}

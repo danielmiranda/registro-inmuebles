@@ -33,6 +33,11 @@ const CitiesContainer = () => {
         setSearch(value);
     };
 
+    const handleChange = (value: string) => {
+        setSelectedCity(value);
+    };
+
+
     const normalizeText = (text: string) => {
         return text
             .normalize("NFD")
@@ -71,6 +76,7 @@ const CitiesContainer = () => {
             options={options}
             onSelectCity={setSelectedCity}
             onSearch={handleSearch}
+            onChange={handleChange}
         />
     );
 };
