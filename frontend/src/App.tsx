@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Cities from './components/CitiesContainer';
 import InmuebleContainer from './components/InmuebleContainer';
+import PersonaContainer from './components/PersonaContainer';
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ function Home() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
         <Link to="/inmuebles">Ver Inmuebles</Link>
         <Link to="/ciudades">Ver Ciudades</Link>
+        <Link to="/personas">Ver Personas</Link>
       </div>
     </Layout>
   );
@@ -57,6 +59,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/inmuebles" element={<InmuebleContainer />} />
           <Route path="/ciudades" element={<Cities />} />
+          <Route path="/personas" element={<PersonaContainer />} />
         </Routes>
       </Router>
     </ConfigProvider>
