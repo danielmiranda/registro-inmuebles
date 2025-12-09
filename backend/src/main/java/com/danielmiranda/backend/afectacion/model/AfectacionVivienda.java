@@ -1,8 +1,10 @@
 package com.danielmiranda.backend.afectacion.model;
 
 import com.danielmiranda.backend.common.BaseEntity;
-import com.danielmiranda.backend.inmueble.model.Inmueble;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,8 +21,10 @@ public class AfectacionVivienda extends BaseEntity {
 
     private String nroExpediente;
 
-    // Dueño de la relación (Foreign Key en esta tabla)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inmueble_id", unique = true, nullable = false)
-    private Inmueble inmueble;
+    // Referencias por identidad para evitar acoplamiento entre módulos
+    @Column(name = "persona_id", nullable = false)
+    private Long personaId;
+
+    @Column(name = "inmueble_id", nullable = false)
+    private Long inmuebleId;
 }
