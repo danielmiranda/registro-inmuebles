@@ -6,6 +6,7 @@ import Cities from './components/CitiesContainer';
 import InmuebleContainer from './components/InmuebleContainer';
 import PersonaContainer from './components/PersonaContainer';
 import TitularidadContainer from './components/TitularidadContainer';
+import AfectacionContainer from './components/AfectacionContainer';
 
 const { Title } = Typography;
 
@@ -18,6 +19,7 @@ function Home() {
         <Link to="/ciudades">Ver Ciudades</Link>
         <Link to="/personas">Ver Personas</Link>
         <Link to="/titularidades">Asociar Titularidades</Link>
+        <Link to="/afectacion">Afectación Bien de Familia</Link>
       </div>
     </Layout>
   );
@@ -63,6 +65,7 @@ function App() {
           <Route path="/ciudades" element={<Cities />} />
           <Route path="/personas" element={<PersonaContainer />} />
           <Route path="/titularidades" element={<TitularidadContainer />} />
+          <Route path="/afectacion" element={<AfectacionContainer />} />
         </Routes>
       </Router>
     </ConfigProvider>
