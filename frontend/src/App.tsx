@@ -3,6 +3,7 @@ import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Cities from './components/CitiesContainer';
+import InmuebleContainer from './components/InmuebleContainer';
 
 const { Title } = Typography;
 
@@ -10,7 +11,10 @@ function Home() {
   return (
     <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column' }}>
       <Title level={1}>Registro Inmuebles</Title>
-      <Link to="/ciudades">Ver Ciudades</Link>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
+        <Link to="/inmuebles">Ver Inmuebles</Link>
+        <Link to="/ciudades">Ver Ciudades</Link>
+      </div>
     </Layout>
   );
 }
@@ -51,6 +55,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/inmuebles" element={<InmuebleContainer />} />
           <Route path="/ciudades" element={<Cities />} />
         </Routes>
       </Router>
