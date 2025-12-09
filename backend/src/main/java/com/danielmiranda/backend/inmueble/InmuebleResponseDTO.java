@@ -1,6 +1,7 @@
 package com.danielmiranda.backend.inmueble;
 
-public record InmuebleDTO(
+public record InmuebleResponseDTO(
+        Long id,
         String matricula,
         String nomenclatura,
         Integer ciudadId,
