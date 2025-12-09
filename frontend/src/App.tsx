@@ -2,7 +2,7 @@ import { Layout, Typography, ConfigProvider, theme, Button } from 'antd';
 import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Cities from './components/Cities';
+import Cities from './components/CitiesContainer';
 
 const { Title } = Typography;
 
