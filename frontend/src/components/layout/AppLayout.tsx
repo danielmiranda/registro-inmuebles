@@ -2,7 +2,7 @@ import { Layout, Menu, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import type { ReactNode } from 'react';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 const { Title } = Typography;
 
 export type AppMenuItem = Required<MenuProps>['items'][number];

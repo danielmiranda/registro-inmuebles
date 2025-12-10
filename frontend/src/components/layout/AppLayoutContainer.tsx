@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import {
-    HomeOutlined, ApartmentOutlined, TeamOutlined, IdcardOutlined, FileTextOutlined, EnvironmentOutlined, HomeTwoTone,
+    HomeOutlined, ApartmentOutlined, TeamOutlined, IdcardOutlined, FileTextOutlined, EnvironmentOutlined,
     HomeFilled
 } from '@ant-design/icons';
 import AppLayout, { type AppMenuItem } from './AppLayout';
