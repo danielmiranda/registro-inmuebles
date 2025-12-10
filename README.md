@@ -1,6 +1,6 @@
 # 🏡 Sistema de Registro de Propiedad Inmueble (Neuquén)
 
-> **Prueba Técnica Fullstack Senior**
+> **Prueba Técnica**
 > Aplicación para la gestión de "Afectación a Vivienda" (Bien de Familia).
 
 ![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square)
@@ -12,7 +12,7 @@
 
 Este sistema permite registrar inmuebles como Bien de Familia bajo la normativa de la provincia de Neuquén. Resuelve la complejidad de múltiples titulares, validación matemática de porcentajes de propiedad (racionales/quebrados).
 
-El proyecto está estructurado como un **Monorepo Lógico**, desacoplando el Backend (API REST) del Frontend (SPA), orquestados mediante Docker para un despliegue transparente.
+El proyecto está estructurado como un **Monorepo Lógico**, desacoplando el Backend (API REST) del Frontend (SPA), orquestados mediante Docker Compose para un despliegue transparente.
 
 ---
 
@@ -32,9 +32,7 @@ El siguiente diagrama ilustra el modelo de entidades, la normalización geográf
 ### Backend (Spring Boot)
 * **Core:** Java 21, Spring Boot 3.x.
 * **Persistencia:** Spring Data JPA, H2 Database (In-Memory).
-* **Validación & Utils:** Apache Commons Math (para validación precisa de quebrados), Hibernate Validator.
-* **Calidad de Código:** MapStruct (mapeo DTO/Entidad), Lombok.
-* **Documentación:** OpenAPI / Swagger UI.
+* **Calidad de Código:** MapStruct (mapeo DTO/Entidad), Lombok, Modulith.
 
 ### Frontend (React 19)
 * **Framework:** Vite + React 19 (TypeScript).
@@ -49,12 +47,7 @@ El siguiente diagrama ilustra el modelo de entidades, la normalización geográf
 1.  **Entidad `Titularidad` Explicita:**
     En lugar de una relación `@ManyToMany` simple, se creó una entidad intermedia para almacenar el porcentaje de propiedad con precisión matemática (numerador/denominador), evitando errores de redondeo de punto flotante.
 
-2.  **Patrón "Query View" (CQRS Lite):**
-    Para las búsquedas (`BusquedaGlobalDTO`), no se recuperan entidades completas. Se utilizan **JPQL Constructor Expressions** para proyectar directamente los resultados de la BD a un DTO plano.
-    * *Beneficio:* Búsquedas ultrarrápidas y payload JSON mínimo.
-    * *Resultado:* Tablas en el frontend que renderizan sin transformar datos complejos.
-
-3.  **Geografía Normalizada y Flexible:**
+2.  **Geografía Normalizada y Flexible:**
     La relación `Inmueble -> Ciudad -> Departamento` permite integridad referencial, pero el modelo soporta propiedades rurales (sin Ciudad asignada) vinculadas directamente a un Departamento.
 
 ---
@@ -74,7 +67,6 @@ Ir a las siguientes URL para revisar la aplicación
 
 * Frontend: http://localhost:5173
 * Backend API: http://localhost:8080/api/v1
-* Swagger UI: http://localhost:8080/swagger-ui.html
 * H2 Console: http://localhost:8080/h2-console/ (url=jdbc:h2:mem:registro user=sa pass=)
 
 [![](/resources/images/h2_console.png)
@@ -89,11 +81,4 @@ mvn spring-boot:run
 ```bash
    npm install
    npm run dev
-```
-
-### Ejecutar tests de Backend
-✅ TestingEl proyecto incluye tests unitarios para la lógica crítica (validación de fracciones) y de integración para los repositorios.
-```bash   
-cd backend
-mvn test
 ```
