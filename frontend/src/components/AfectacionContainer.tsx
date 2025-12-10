@@ -35,6 +35,7 @@ interface TitularidadDTO {
   numerador?: number;
   denominador?: number;
   porcentaje?: number;
+  afectacionAprobada?: boolean;
 }
 
 interface CiudadDTO { id: number; nombre: string }
@@ -150,14 +151,27 @@ const AfectacionContainer = () => {
   const titularInmuebleIds = useMemo(() => new Set(titularidades.map(t => t.inmuebleId)), [titularidades]);
 
   // Mostrar sólo los inmuebles asociados a la persona seleccionada.
-  // Si no hay persona seleccionada, mostrar todos.
+  // Si no hay persona seleccionada, la lista debe estar vacía (requerimiento).
   const inmuebleOptions = useMemo(() => {
     const list =
       selectedPersonaId != null
         ? inmuebles.filter(i => titularInmuebleIds.has(i.id))
-        : inmuebles;
+        : [];
     return list.map(i => ({ value: i.id, label: `${i.matricula} - ${i.nomenclatura}` }));
   }, [inmuebles, selectedPersonaId, titularInmuebleIds]);
+
+  // Mapa de inmuebles con afectación aprobada para la persona seleccionada
+  const aprobadasByInmueble = useMemo(() => {
+    const map: Record<number, boolean> = {};
+    for (const t of titularidades) {
+      if (t.inmuebleId != null && t.afectacionAprobada) {
+        map[t.inmuebleId] = true;
+      }
+    }
+    return map;
+  }, [titularidades]);
+
+  const personaHasAprobada = useMemo(() => Object.values(aprobadasByInmueble).some(Boolean), [aprobadasByInmueble]);
 
   const personaOptions = useMemo(() => personas.map(p => ({ value: p.id, label: `${p.nombre} ${p.apellido} (${p.cuit})` })), [personas]);
 
@@ -254,6 +268,8 @@ const AfectacionContainer = () => {
       onCreateTitularidad={handleCreateTitularidad}
       titularesInmueble={titularesInmueble}
       titularesInmuebleLoading={titularesInmuebleLoading}
+      aprobadasByInmueble={aprobadasByInmueble}
+      personaHasAprobada={personaHasAprobada}
     />
   );
 };

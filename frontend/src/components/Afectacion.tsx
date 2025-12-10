@@ -23,6 +23,8 @@ interface Props {
   selectedPersonaId: number | null;
   titularInmuebleIds: number[];
   selectedInmuebleId: number | null;
+  aprobadasByInmueble: Record<number, boolean>;
+  personaHasAprobada: boolean;
   onChangePersona: (id: number | null) => void;
   onChangeInmueble: (id: number | null) => void;
   onReload: () => void;
@@ -56,6 +58,8 @@ const Afectacion: React.FC<Props> = ({
   onCreateTitularidad,
   titularesInmueble,
   titularesInmuebleLoading,
+  aprobadasByInmueble,
+  personaHasAprobada,
 }) => {
   const [afForm] = Form.useForm<{ personaId: number; inmuebleId: number; estado: EstadoAfectacion; nroExpediente: string; fecha: any }>();
   const [showPersonaModal, setShowPersonaModal] = useState(false);
@@ -228,26 +232,70 @@ const Afectacion: React.FC<Props> = ({
             <div style={{ display: 'flex', gap: 8 }}>
               <div style={{ flex: 1 }}>
                 <label>Inmueble</label>
-                <Space.Compact style={{ width: '100%' }}>
-                  <Select
-                    style={{ flex: 1 }}
-                    placeholder="Buscar inmueble"
-                    showSearch
-                    allowClear
-                    value={selectedInmuebleId ?? undefined}
-                    filterOption={(input, option) => (option?.label as string).toLowerCase().includes(input.toLowerCase())}
-                    options={inmuebleOptions}
-                    onChange={(v) => {
-                      afForm.setFieldsValue({ inmuebleId: v });
-                      onChangeInmueble(v ?? null);
-                    }}
-                  />
+                {/* Lista con check de los inmuebles de la persona */}
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1, maxHeight: 220, overflowY: 'auto', border: '1px solid #f0f0f0', borderRadius: 6 }}>
+                    {(!personaId && !selectedPersonaId) ? (
+                      <div style={{ padding: 12, color: '#999' }}>Seleccione una persona para ver sus inmuebles</div>
+                    ) : (
+                      <div>
+                        {inmuebleOptions.length === 0 ? (
+                          <div style={{ padding: 12, color: '#999' }}>La persona no tiene inmuebles asociados</div>
+                        ) : (
+                          inmuebleOptions.map(opt => {
+                            const selected = selectedInmuebleId === opt.value;
+                            const aprobada = !!aprobadasByInmueble[opt.value];
+                            return (
+                              <div
+                                key={opt.value}
+                                onClick={() => {
+                                  afForm.setFieldsValue({ inmuebleId: opt.value });
+                                  onChangeInmueble(opt.value);
+                                }}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  padding: '8px 12px',
+                                  cursor: 'pointer',
+                                  background: selected ? '#e6f7ff' : undefined,
+                                  borderBottom: '1px solid #f5f5f5'
+                                }}
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                  <span style={{
+                                    display: 'inline-block',
+                                    width: 16,
+                                    height: 16,
+                                    border: '1px solid #1890ff',
+                                    borderRadius: 3,
+                                    background: selected ? '#1890ff' : 'transparent'
+                                  }} />
+                                  <span>{opt.label}</span>
+                                </div>
+                                {aprobada && (
+                                  <Tag color="green">Afectación aprobada</Tag>
+                                )}
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <Button onClick={() => setShowInmuebleModal(true)} icon={<PlusOutlined />}>Nuevo</Button>
-                </Space.Compact>
+                </div>
+                {/* Mensaje cuando el inmueble seleccionado no corresponde a titularidades de la persona */}
                 {!personaHasInmueble && personaId && selectedInmuebleId && (
                   <div style={{ marginTop: 8 }}>
                     <Tag color="gold">La persona seleccionada no es titular de este inmueble</Tag>
                     <Button size="small" onClick={() => setShowTitularidadModal(true)} style={{ marginLeft: 8 }}>Asociar titularidad</Button>
+                  </div>
+                )}
+
+                {personaHasAprobada && (
+                  <div style={{ marginTop: 8 }}>
+                    <Alert type="success" message="La persona ya posee una afectación aprobada. Sólo se permite una por persona." showIcon />
                   </div>
                 )}
 
@@ -304,7 +352,7 @@ const Afectacion: React.FC<Props> = ({
         </Card>
 
         <Card title="Afectación">
-          <Form form={afForm} layout="vertical" onFinish={submitAfectacion} initialValues={{ estado: 'APROBADA', fecha: dayjs() }}>
+          <Form form={afForm} layout="vertical" onFinish={submitAfectacion} initialValues={{ estado: 'APROBADA', fecha: dayjs() }} disabled={personaHasAprobada}>
             {/* Mostrar la persona seleccionada arriba como etiqueta y mantener el campo oculto para el valor */}
             <Form.Item label="Persona Iniciadora del Trámite">
               {selectedPersonaLabel ? (
@@ -341,7 +389,7 @@ const Afectacion: React.FC<Props> = ({
               <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={formLoading}>Registrar afectación</Button>
+              <Button type="primary" htmlType="submit" loading={formLoading} disabled={personaHasAprobada}>Registrar afectación</Button>
             </Form.Item>
           </Form>
         </Card>
