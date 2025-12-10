@@ -1,8 +1,9 @@
 import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Form, InputNumber, Table, message } from 'antd';
-import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, ExclamationCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import PersonaFormModal from './PersonaFormModal';
 import { normalizeText } from '../utils/text';
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -52,6 +53,7 @@ const Titularidad: React.FC<Props> = ({
   onDelete,
   onCreatePersona,
 }) => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm<{ inmuebleId: number; numerador: number; denominador: number }>();
   const [isPersonaModalOpen, setIsPersonaModalOpen] = useState(false);
@@ -90,9 +92,17 @@ const Titularidad: React.FC<Props> = ({
     { title: 'Fracción', key: 'fraccion', render: (_: any, r: TitularidadRow) => `${r.numerador}/${r.denominador}` },
     { title: 'Porcentaje', dataIndex: 'porcentaje', key: 'porcentaje', render: (v: number) => `${v.toFixed(2)}%` },
     {
-      title: 'Acciones', key: 'actions', width: 130,
+      title: 'Acciones', key: 'actions', width: 180,
       render: (_: any, record: TitularidadRow) => (
-        <Button danger icon={<DeleteOutlined />} onClick={() => confirmDelete(record)}>Eliminar</Button>
+        <Space>
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
+            onClick={() => navigate('/titularidades-inmueble', { state: { inmuebleId: record.inmuebleId } })}
+          >
+            Ver titulares
+          </Button>
+        </Space>
       )
     }
   ], [inmuebleLabel]);

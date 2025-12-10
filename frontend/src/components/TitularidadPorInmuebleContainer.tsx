@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import TitularidadPorInmueble, { type TitularidadDraftRow } from './TitularidadPorInmueble';
+import { useLocation } from 'react-router-dom';
 
 export interface PersonaDTO {
   id: number;
@@ -37,6 +38,7 @@ export interface TitularidadResponseDTO {
 }
 
 const TitularidadPorInmuebleContainer = () => {
+  const location = useLocation();
   const [personas, setPersonas] = useState<PersonaDTO[]>([]);
   const [inmuebles, setInmuebles] = useState<InmuebleDTO[]>([]);
   const [ciudades, setCiudades] = useState<CiudadDTO[]>([]);
@@ -96,6 +98,31 @@ const TitularidadPorInmuebleContainer = () => {
   useEffect(() => {
     fetchBaseData();
   }, []);
+
+  // Initialize selected inmueble from router state or query string when available
+  useEffect(() => {
+    if (selectedInmuebleId != null) return; // do not override a manual selection
+
+    let initialId: number | null = null;
+    const state: any = location.state as any;
+    if (state && typeof state.inmuebleId === 'number') {
+      initialId = state.inmuebleId;
+    } else if (typeof state?.inmuebleId === 'string') {
+      const n = Number(state.inmuebleId);
+      if (!Number.isNaN(n)) initialId = n;
+    }
+
+    if (initialId == null) {
+      const params = new URLSearchParams(location.search);
+      const q = params.get('inmuebleId');
+      if (q) {
+        const n = Number(q);
+        if (!Number.isNaN(n)) initialId = n;
+      }
+    }
+
+    if (initialId != null) setSelectedInmuebleId(initialId);
+  }, [location, selectedInmuebleId]);
 
   useEffect(() => {
     if (selectedInmuebleId != null) fetchTitularidades(selectedInmuebleId);
