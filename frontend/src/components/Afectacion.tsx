@@ -21,12 +21,16 @@ interface Props {
   departamentoOptions: OptionItem[];
   selectedPersonaId: number | null;
   titularInmuebleIds: number[];
+  selectedInmuebleId: number | null;
   onChangePersona: (id: number | null) => void;
+  onChangeInmueble: (id: number | null) => void;
   onReload: () => void;
   onCreateAfectacion: (payload: { personaId: number; inmuebleId: number; estado: EstadoAfectacion; nroExpediente: string; fecha: string; }) => Promise<void> | void;
   onCreatePersona: (values: { cuit: string; nombre: string; apellido: string }) => Promise<{ id: number } | void>;
   onCreateInmueble: (values: { matricula: string; nomenclatura: string; ciudadId: number; departamentoId: number }) => Promise<{ id: number } | void>;
   onCreateTitularidad: (values: { inmuebleId: number; numerador: number; denominador: number }) => Promise<void> | void;
+  titularesInmueble: { id: number; personaId: number; numerador?: number; denominador?: number; porcentaje?: number }[];
+  titularesInmuebleLoading: boolean;
 }
 
 const Afectacion: React.FC<Props> = ({
@@ -41,12 +45,16 @@ const Afectacion: React.FC<Props> = ({
   departamentoOptions,
   selectedPersonaId,
   titularInmuebleIds,
+  selectedInmuebleId,
   onChangePersona,
+  onChangeInmueble,
   onReload,
   onCreateAfectacion,
   onCreatePersona,
   onCreateInmueble,
   onCreateTitularidad,
+  titularesInmueble,
+  titularesInmuebleLoading,
 }) => {
   const [afForm] = Form.useForm<{ personaId: number; inmuebleId: number; estado: EstadoAfectacion; nroExpediente: string; fecha: any }>();
   const [showPersonaModal, setShowPersonaModal] = useState(false);
@@ -67,6 +75,7 @@ const Afectacion: React.FC<Props> = ({
   useEffect(() => {
     // limpiar siempre inmueble al cambiar la persona en el formulario
     afForm.setFieldsValue({ inmuebleId: undefined });
+    onChangeInmueble(null);
   }, [selectedPersonaId, afForm]);
 
   const estadoOptions: { value: EstadoAfectacion; label: string }[] = useMemo(() => ([
@@ -78,7 +87,6 @@ const Afectacion: React.FC<Props> = ({
     { value: 'CANCELADA', label: 'Cancelada' },
   ]), []);
 
-  const selectedInmuebleId = Form.useWatch('inmuebleId', afForm) as number | undefined;
   const personaId = Form.useWatch('personaId', afForm) as number | undefined;
 
   const personaHasInmueble = selectedInmuebleId ? titularInmuebleIds.includes(selectedInmuebleId) : true;
@@ -119,6 +127,7 @@ const Afectacion: React.FC<Props> = ({
       const created = await onCreateInmueble(values);
       if (created && (created as any).id) {
         afForm.setFieldsValue({ inmuebleId: (created as any).id });
+        onChangeInmueble((created as any).id);
         message.success('Inmueble creado');
       }
       setShowInmuebleModal(false);
@@ -202,10 +211,13 @@ const Afectacion: React.FC<Props> = ({
                     placeholder="Buscar inmueble"
                     showSearch
                     allowClear
-                    value={selectedInmuebleId}
+                    value={selectedInmuebleId ?? undefined}
                     filterOption={(input, option) => (option?.label as string).toLowerCase().includes(input.toLowerCase())}
                     options={inmuebleOptions}
-                    onChange={(v) => afForm.setFieldsValue({ inmuebleId: v })}
+                    onChange={(v) => {
+                      afForm.setFieldsValue({ inmuebleId: v });
+                      onChangeInmueble(v ?? null);
+                    }}
                   />
                   <Button onClick={() => setShowInmuebleModal(true)} icon={<PlusOutlined />}>Nuevo</Button>
                 </Space.Compact>
@@ -213,6 +225,54 @@ const Afectacion: React.FC<Props> = ({
                   <div style={{ marginTop: 8 }}>
                     <Tag color="gold">La persona seleccionada no es titular de este inmueble</Tag>
                     <Button size="small" onClick={() => setShowTitularidadModal(true)} style={{ marginLeft: 8 }}>Asociar titularidad</Button>
+                  </div>
+                )}
+
+                {/* Grilla de titulares del inmueble seleccionado */}
+                {selectedInmuebleId && (
+                  <div style={{ marginTop: 12 }}>
+                    <Title level={5} style={{ marginBottom: 8 }}>Titulares del inmueble</Title>
+                    {/* Construir mapa de label de persona */}
+                    {(() => {
+                      const personaLabel = new Map(personaOptions.map(o => [o.value, o.label]));
+                      const data = (titularesInmueble || []).map(t => ({
+                        key: t.id,
+                        id: t.id,
+                        persona: personaLabel.get(t.personaId) || t.personaId,
+                        fraccion: t.numerador != null && t.denominador != null ? `${t.numerador}/${t.denominador}` : '-',
+                        porcentaje: t.porcentaje != null ? `${t.porcentaje.toFixed(2)}%` : '-',
+                      }));
+                      return (
+                        <div>
+                          <Spin spinning={titularesInmuebleLoading}>
+                            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                              <thead>
+                                <tr>
+                                  <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd', padding: '8px' }}>Persona</th>
+                                  <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd', padding: '8px' }}>Fracción</th>
+                                  <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd', padding: '8px' }}>Porcentaje</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {data.length === 0 ? (
+                                  <tr>
+                                    <td colSpan={3} style={{ padding: '12px', color: '#888' }}>Sin titulares para este inmueble</td>
+                                  </tr>
+                                ) : (
+                                  data.map(row => (
+                                    <tr key={row.key}>
+                                      <td style={{ padding: '8px', borderBottom: '1px solid #f0f0f0' }}>{row.persona}</td>
+                                      <td style={{ padding: '8px', borderBottom: '1px solid #f0f0f0' }}>{row.fraccion}</td>
+                                      <td style={{ padding: '8px', borderBottom: '1px solid #f0f0f0' }}>{row.porcentaje}</td>
+                                    </tr>
+                                  ))
+                                )}
+                              </tbody>
+                            </table>
+                          </Spin>
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
               </div>

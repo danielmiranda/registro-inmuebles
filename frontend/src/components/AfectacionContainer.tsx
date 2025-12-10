@@ -32,6 +32,9 @@ interface TitularidadDTO {
   id: number;
   personaId: number;
   inmuebleId: number;
+  numerador?: number;
+  denominador?: number;
+  porcentaje?: number;
 }
 
 interface CiudadDTO { id: number; nombre: string }
@@ -51,6 +54,11 @@ const AfectacionContainer = () => {
   const [formLoading, setFormLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [noData, setNoData] = useState<boolean>(false);
+
+  // Titulares del inmueble seleccionado (grilla debajo del selector de inmueble)
+  const [selectedInmuebleId, setSelectedInmuebleId] = useState<number | null>(null);
+  const [titularesInmueble, setTitularesInmueble] = useState<TitularidadDTO[]>([]);
+  const [titularesInmuebleLoading, setTitularesInmuebleLoading] = useState<boolean>(false);
 
   const fetchBaseData = async () => {
     setLoading(true);
@@ -101,6 +109,23 @@ const AfectacionContainer = () => {
     }
   };
 
+  const fetchTitularesByInmueble = async (inmuebleId: number) => {
+    setTitularesInmuebleLoading(true);
+    try {
+      const res = await axios.get('/titularidades', { params: { inmuebleId } });
+      setTitularesInmueble(res.data);
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response?.status === 400 && (err.response.data as any)?.message === 'No hay información disponible') {
+        setTitularesInmueble([]);
+      } else {
+        // no elevar error a nivel de pantalla principal; sólo dejar la grilla vacía
+        setTitularesInmueble([]);
+      }
+    } finally {
+      setTitularesInmuebleLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchBaseData();
   }, []);
@@ -112,6 +137,15 @@ const AfectacionContainer = () => {
       setTitularidades([]);
     }
   }, [selectedPersonaId]);
+
+  // Cuando cambia el inmueble seleccionado (propagado desde la vista), cargar titulares del inmueble
+  useEffect(() => {
+    if (selectedInmuebleId != null) {
+      fetchTitularesByInmueble(selectedInmuebleId);
+    } else {
+      setTitularesInmueble([]);
+    }
+  }, [selectedInmuebleId]);
 
   const titularInmuebleIds = useMemo(() => new Set(titularidades.map(t => t.inmuebleId)), [titularidades]);
 
@@ -210,12 +244,16 @@ const AfectacionContainer = () => {
       departamentoOptions={departamentos.map(d => ({ value: d.id, label: d.nombre }))}
       selectedPersonaId={selectedPersonaId}
       onChangePersona={setSelectedPersonaId}
+      selectedInmuebleId={selectedInmuebleId}
+      onChangeInmueble={setSelectedInmuebleId}
       onReload={fetchBaseData}
       onCreateAfectacion={handleCrearAfectacion}
       onCreatePersona={handleCreatePersona}
       onCreateInmueble={handleCreateInmueble}
       titularInmuebleIds={[...titularInmuebleIds]}
       onCreateTitularidad={handleCreateTitularidad}
+      titularesInmueble={titularesInmueble}
+      titularesInmuebleLoading={titularesInmuebleLoading}
     />
   );
 };
