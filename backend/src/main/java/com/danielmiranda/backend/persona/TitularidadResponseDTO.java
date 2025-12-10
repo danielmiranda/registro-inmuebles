@@ -6,6 +6,7 @@ public record TitularidadResponseDTO(
         Long inmuebleId,
         Integer numerador,
         Integer denominador,
-        Double porcentaje
+        Double porcentaje,
+        boolean afectacionAprobada
 ) {
 }

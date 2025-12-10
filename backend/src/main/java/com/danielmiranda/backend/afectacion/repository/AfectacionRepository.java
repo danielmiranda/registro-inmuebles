@@ -18,6 +18,8 @@ public interface AfectacionRepository extends JpaRepository<AfectacionVivienda, 
 
     boolean existsByPersonaIdAndEstadoAndDeletedFalse(Long personaId, EstadoAfectacion estado);
 
+    boolean existsByInmuebleIdAndEstadoAndDeletedFalse(Long inmuebleId, EstadoAfectacion estado);
+
     boolean existsByPersonaIdAndInmuebleIdAndDeletedFalse(Long personaId, Long inmuebleId);
 
     boolean existsByPersonaIdAndInmuebleIdAndIdNotAndDeletedFalse(Long personaId, Long inmuebleId, Long id);

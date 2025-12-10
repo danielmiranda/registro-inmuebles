@@ -4,6 +4,7 @@ import com.danielmiranda.backend.common.exception.BusinessRuleException;
 import com.danielmiranda.backend.common.exception.DuplicateResourceException;
 import com.danielmiranda.backend.common.exception.ResourceNotFoundException;
 import com.danielmiranda.backend.persona.api.InmuebleAccess;
+import com.danielmiranda.backend.persona.api.AfectacionAccess;
 import com.danielmiranda.backend.persona.mapper.TitularidadMapper;
 import com.danielmiranda.backend.persona.model.Persona;
 import com.danielmiranda.backend.persona.model.Titularidad;
@@ -23,23 +24,24 @@ public class TitularidadService {
     private final TitularidadRepository titularidadRepository;
     private final PersonaRepository personaRepository;
     private final InmuebleAccess inmuebleAccess;
+    private final AfectacionAccess afectacionAccess;
     private final TitularidadMapper mapper;
 
     public List<TitularidadResponseDTO> findAll() {
         return titularidadRepository.findAllByDeletedFalse().stream()
-                .map(mapper::toResponseDTO)
+                .map(t -> mapper.toResponseDTO(t, afectacionAccess.hasAprobadaByInmuebleId(t.getInmuebleId())))
                 .toList();
     }
 
     public List<TitularidadResponseDTO> findByPersona(Long personaId) {
         return titularidadRepository.findAllByPersona_IdAndDeletedFalse(personaId).stream()
-                .map(mapper::toResponseDTO)
+                .map(t -> mapper.toResponseDTO(t, afectacionAccess.hasAprobadaByInmuebleId(t.getInmuebleId())))
                 .toList();
     }
 
     public List<TitularidadResponseDTO> findByInmueble(Long inmuebleId) {
         return titularidadRepository.findAllByInmuebleIdAndDeletedFalse(inmuebleId).stream()
-                .map(mapper::toResponseDTO)
+                .map(t -> mapper.toResponseDTO(t, afectacionAccess.hasAprobadaByInmuebleId(t.getInmuebleId())))
                 .toList();
     }
 
@@ -64,7 +66,7 @@ public class TitularidadService {
         entity.setDenominador(dto.denominador());
 
         Titularidad saved = titularidadRepository.save(entity);
-        return mapper.toResponseDTO(saved);
+        return mapper.toResponseDTO(saved, afectacionAccess.hasAprobadaByInmuebleId(saved.getInmuebleId()));
     }
 
     public TitularidadResponseDTO update(Long id, TitularidadCreateUpdateDTO dto) {
@@ -94,7 +96,7 @@ public class TitularidadService {
         mapper.updateEntityFromDto(dto, entity);
 
         Titularidad updated = titularidadRepository.save(entity);
-        return mapper.toResponseDTO(updated);
+        return mapper.toResponseDTO(updated, afectacionAccess.hasAprobadaByInmuebleId(updated.getInmuebleId()));
     }
 
     public void delete(Long id) {

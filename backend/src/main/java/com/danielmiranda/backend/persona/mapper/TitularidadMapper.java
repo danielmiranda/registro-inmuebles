@@ -15,9 +15,10 @@ public interface TitularidadMapper {
             @Mapping(target = "inmuebleId", source = "inmuebleId"),
             @Mapping(target = "numerador", source = "numerador"),
             @Mapping(target = "denominador", source = "denominador"),
-            @Mapping(target = "porcentaje", expression = "java(entity.getPorcentaje())")
+            @Mapping(target = "porcentaje", expression = "java(entity.getPorcentaje())"),
+            @Mapping(target = "afectacionAprobada", expression = "java(afectacionAprobada)")
     })
-    TitularidadResponseDTO toResponseDTO(Titularidad entity);
+    TitularidadResponseDTO toResponseDTO(Titularidad entity, @Context boolean afectacionAprobada);
 
     @BeanMapping(ignoreByDefault = true)
     @Mappings({
@@ -26,4 +27,5 @@ public interface TitularidadMapper {
             @Mapping(target = "denominador", source = "denominador")
     })
     void updateEntityFromDto(TitularidadCreateUpdateDTO dto, @MappingTarget Titularidad entity);
+
 }
