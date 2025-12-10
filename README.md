@@ -77,8 +77,10 @@ Ir a las siguientes URL para revisar la aplicación
 cd backend
 mvn spring-boot:run
 ```
-2. Frontend:cd frontend
+2. Frontend:
+
 ```bash
+   cd frontend
    npm install
    npm run dev
 ```
