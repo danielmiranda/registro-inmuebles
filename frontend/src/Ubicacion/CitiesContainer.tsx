@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Cities from './Cities'; // Import the presentation component
-import { normalizeText } from '../utils/text';
+import Cities from './Cities.tsx'; // Import the presentation component
+import { normalizeText } from '../utils/text.ts';
 
 interface CiudadDTO {
     id: number;

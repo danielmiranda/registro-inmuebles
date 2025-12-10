@@ -2,6 +2,7 @@ import { Layout, Typography, Alert, Spin, Card, Space, Select, Button, Modal, Fo
 import dayjs from 'dayjs';
 import { PlusOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
+import PersonaFormModal from '../Personas/PersonaFormModal.tsx';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -66,7 +67,6 @@ const Afectacion: React.FC<Props> = ({
   const [showInmuebleModal, setShowInmuebleModal] = useState(false);
   const [showTitularidadModal, setShowTitularidadModal] = useState(false);
 
-  const [personaForm] = Form.useForm<{ cuit: string; nombre: string; apellido: string }>();
   const [inmuebleForm] = Form.useForm<{ matricula: string; nomenclatura: string; ciudadId: number; departamentoId: number }>();
   const [titularidadForm] = Form.useForm<{ numerador: number; denominador: number }>();
 
@@ -130,6 +130,14 @@ const Afectacion: React.FC<Props> = ({
       });
       message.success('Afectación creada');
       afForm.resetFields(['estado', 'nroExpediente', 'fecha']);
+      // Refrescar el campo de persona para que se recarguen los inmuebles
+      const currentPersonaId = afForm.getFieldValue('personaId') as number | undefined;
+      if (currentPersonaId != null) {
+        // Forzar refresco: deseleccionar y volver a seleccionar la misma persona
+        onChangePersona(null);
+        // Re-seleccionar en el siguiente ciclo de eventos para asegurar el disparo de efectos en el contenedor
+        setTimeout(() => onChangePersona(currentPersonaId), 0);
+      }
     } catch (e: any) {
       message.error(e?.message || 'No se pudo crear la afectación');
     }
@@ -143,7 +151,6 @@ const Afectacion: React.FC<Props> = ({
         message.success('Persona creada');
       }
       setShowPersonaModal(false);
-      personaForm.resetFields();
     } catch (e: any) {
       message.error(e?.message || 'Error al crear persona');
     }
@@ -395,24 +402,13 @@ const Afectacion: React.FC<Props> = ({
         </Card>
       </Space>
 
-      {/* Modal crear persona */}
-      <Modal title="Nueva Persona" open={showPersonaModal} onCancel={() => setShowPersonaModal(false)} footer={null} destroyOnClose>
-        <Form form={personaForm} layout="vertical" onFinish={handleCreatePersona}>
-          <Form.Item name="cuit" label="CUIT" rules={[{ required: true, message: 'Ingrese CUIT' }]}>
-            <Input placeholder="20-12345678-3" />
-          </Form.Item>
-          <Form.Item name="nombre" label="Nombre" rules={[{ required: true, message: 'Ingrese nombre' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="apellido" label="Apellido" rules={[{ required: true, message: 'Ingrese apellido' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
-            <Button onClick={() => setShowPersonaModal(false)} style={{ marginRight: 8 }}>Cancelar</Button>
-            <Button type="primary" htmlType="submit" loading={formLoading}>Crear</Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+      {/* Modal crear persona (usa componente reutilizable) */}
+      <PersonaFormModal
+        open={showPersonaModal}
+        loading={formLoading}
+        onCancel={() => setShowPersonaModal(false)}
+        onSubmit={handleCreatePersona}
+      />
 
       {/* Modal crear inmueble */}
       <Modal title="Nuevo Inmueble" open={showInmuebleModal} onCancel={() => setShowInmuebleModal(false)} footer={null} destroyOnClose>

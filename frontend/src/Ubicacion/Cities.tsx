@@ -1,5 +1,5 @@
 import { Table, Spin, Alert, Layout, Typography, AutoComplete } from 'antd';
-import { normalizeText } from '../utils/text';
+import { normalizeText } from '../utils/text.ts';
 
 const { Title } = Typography;
 

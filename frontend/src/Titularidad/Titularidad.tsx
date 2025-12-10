@@ -2,7 +2,7 @@ import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Fo
 import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import PersonaFormModal from '../Personas/PersonaFormModal.tsx';
-import { normalizeText } from '../utils/text';
+import { normalizeText } from '../utils/text.ts';
 import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;

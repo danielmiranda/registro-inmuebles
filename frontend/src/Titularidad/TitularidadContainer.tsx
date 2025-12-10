@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import Titularidad from './Titularidad';
+import Titularidad from './Titularidad.tsx';
 
 export interface PersonaResponseDTO {
   id: number;

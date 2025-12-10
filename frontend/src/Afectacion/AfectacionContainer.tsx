@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import Afectacion from './Afectacion';
+import Afectacion from './Afectacion.tsx';
 
 export interface PersonaDTO {
   id: number;

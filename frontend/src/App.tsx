@@ -2,11 +2,11 @@ import { Layout, Typography, ConfigProvider, theme, Button } from 'antd';
 import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Cities from './components/CitiesContainer';
+import Cities from './Ubicacion/CitiesContainer.tsx';
 import InmuebleContainer from './Inmuebles/InmuebleContainer.tsx';
 import PersonaContainer from './Personas/PersonaContainer.tsx';
-import TitularidadContainer from './components/TitularidadContainer';
-import AfectacionContainer from './components/AfectacionContainer';
+import TitularidadContainer from './Titularidad/TitularidadContainer.tsx';
+import AfectacionContainer from './Afectacion/AfectacionContainer.tsx';
 import TitularidadPorInmuebleContainer from './Inmuebles/TitularidadPorInmuebleContainer.tsx';
 
 const { Title } = Typography;
