@@ -2,6 +2,7 @@ import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Fo
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import PersonaFormModal from './PersonaFormModal';
+import { normalizeText } from '../utils/text';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -111,6 +112,7 @@ const Titularidad: React.FC<Props> = ({
     });
   };
 
+
   const handleCreatePersona = async (values: { cuit: string; nombre: string; apellido: string }) => {
     setCreatingPersona(true);
     try {
@@ -156,7 +158,9 @@ const Titularidad: React.FC<Props> = ({
                 allowClear
                 style={{ minWidth: 360 }}
                 optionFilterProp="children"
-                filterOption={(input, option) => (option?.children as string).toLowerCase().includes(input.toLowerCase())}
+                filterOption={(input, option) =>
+                  normalizeText((option?.children as string) ?? '').includes(normalizeText(input))
+                }
               >
                 {personaOptions.map(o => (
                   <Option key={o.value} value={o.value}>{o.label}</Option>

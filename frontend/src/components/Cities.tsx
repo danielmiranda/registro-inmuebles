@@ -1,4 +1,5 @@
 import { Table, Spin, Alert, Layout, Typography, AutoComplete } from 'antd';
+import { normalizeText } from '../utils/text';
 
 const { Title } = Typography;
 
@@ -34,12 +35,6 @@ interface CitiesProps {
     onChange: (value: string) => void;
 }
 
-const normalizeText = (text: string) => {
-    return text
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase();
-};
 
 const Cities: React.FC<CitiesProps> = ({
                                            cities,

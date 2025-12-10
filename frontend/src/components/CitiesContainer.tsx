@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cities from './Cities'; // Import the presentation component
+import { normalizeText } from '../utils/text';
 
 interface CiudadDTO {
     id: number;
@@ -35,14 +36,6 @@ const CitiesContainer = () => {
 
     const handleChange = (value: string) => {
         setSelectedCity(value);
-    };
-
-
-    const normalizeText = (text: string) => {
-        return text
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase();
     };
 
     const filteredData = cities.filter(item =>
