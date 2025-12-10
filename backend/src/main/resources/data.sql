@@ -360,8 +360,8 @@ INSERT INTO TITULARIDAD (INMUEBLE_ID, PERSONA_ID, NUMERADOR, DENOMINADOR) VALUES
                                                                               (55, 16, 1, 1); -- Medina Silvia Beatriz
 
 INSERT INTO AFECTACION_VIVIENDA (ESTADO, FECHA, INMUEBLE_ID, NRO_EXPEDIENTE, PERSONA_ID) VALUES
-('APROBADA', '2025-12-10', 54, 'EXP-00001/2025', 1),
-('APROBADA', '2025-12-10', 55, 'EXP-00002/2025', 16),
-('APROBADA', '2025-12-01', 3, 'EXP-00001/2025', 91),
-('APROBADA', '2025-10-10', 6, 'EXP-00001/2025', 72),
-('APROBADA', '2025-11-10', 9, 'EXP-00001/2025', 46);
+                                                                                             ('APROBADA', '2025-12-10', 54, 'EXP-00001/2025', 1),
+                                                                                             ('APROBADA', '2025-12-10', 55, 'EXP-00002/2025', 16),
+                                                                                             ('APROBADA', '2025-12-01', 3, 'EXP-00001/2025', 91),
+                                                                                             ('APROBADA', '2025-10-10', 6, 'EXP-00001/2025', 72),
+                                                                                             ('APROBADA', '2025-11-10', 9, 'EXP-00001/2025', 46);
