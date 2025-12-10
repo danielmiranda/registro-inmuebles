@@ -211,16 +211,7 @@ const Inmueble: React.FC<InmuebleProps> = ({
 
     return (
         <Layout style={{ padding: '24px' }}>
-            <div style={{ marginBottom: 16 }}>
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={showModal}
-                    size="large"
-                >
-                    Agregar INMUEBLE
-                </Button>
-            </div>
+
 
             <Title level={2}>Lista de Inmuebles</Title>
             <Table
