@@ -1,6 +1,6 @@
 import { Table, Spin, Alert, Layout, Typography, Form, Input, Select, Button, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -37,6 +37,16 @@ const Inmueble: React.FC<InmuebleProps> = ({
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
 
+    const ciudadLabel = useMemo(() => {
+        const map = new Map(ciudadOptions.map(o => [o.value, o.label]));
+        return (id: number) => map.get(id) || id;
+    }, [ciudadOptions]);
+
+    const departamentoLabel = useMemo(() => {
+        const map = new Map(departamentoOptions.map(o => [o.value, o.label]));
+        return (id: number) => map.get(id) || id;
+    }, [departamentoOptions]);
+
     const columns = [
         {
             title: 'ID',
@@ -59,9 +69,19 @@ const Inmueble: React.FC<InmuebleProps> = ({
             key: 'ciudadId',
         },
         {
+            title: 'Ciudad',
+            key: 'ciudadNombre',
+            render: (_: any, r: InmuebleResponseDTO) => ciudadLabel(r.ciudadId),
+        },
+        {
             title: 'Departamento ID',
             dataIndex: 'departamentoId',
             key: 'departamentoId',
+        },
+        {
+            title: 'Departamento',
+            key: 'departamentoNombre',
+            render: (_: any, r: InmuebleResponseDTO) => departamentoLabel(r.departamentoId),
         },
     ];
 
