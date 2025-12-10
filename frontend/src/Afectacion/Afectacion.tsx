@@ -363,9 +363,9 @@ const Afectacion: React.FC<Props> = ({
             {/* Mostrar la persona seleccionada arriba como etiqueta y mantener el campo oculto para el valor */}
             <Form.Item label="Persona Iniciadora del Trámite">
               {selectedPersonaLabel ? (
-                <Tag color="blue">{selectedPersonaLabel}</Tag>
+                <Alert title={selectedPersonaLabel} showIcon></Alert>
               ) : (
-                <Tag>Sin selección</Tag>
+                  <Alert type="warning" title="Sin selección" showIcon></Alert>
               )}
             </Form.Item>
             <Form.Item name="personaId" hidden rules={[{ required: true, message: 'Seleccione una persona en la parte superior' }]}>
@@ -373,9 +373,10 @@ const Afectacion: React.FC<Props> = ({
             </Form.Item>
             <Form.Item label="Inmueble">
               {selectedInmuebleLabel ? (
-                <Tag color="green">{selectedInmuebleLabel}</Tag>
+                <Alert title={selectedInmuebleLabel} showIcon></Alert>
+
               ) : (
-                <Tag>Sin selección</Tag>
+                  <Alert type="warning" title="Sin selección" showIcon></Alert>
               )}
             </Form.Item>
             {/* Campo oculto para mantener el valor del inmueble seleccionado */}
