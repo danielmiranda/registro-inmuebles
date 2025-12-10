@@ -1,4 +1,4 @@
-import { Layout, Typography, ConfigProvider, theme, Button } from 'antd';
+import { Typography, ConfigProvider, theme, Button } from 'antd';
 import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -9,27 +9,25 @@ import TitularidadContainer from './Titularidad/TitularidadContainer.tsx';
 import AfectacionContainer from './Afectacion/AfectacionContainer.tsx';
 import TitularidadPorInmuebleContainer from './Inmuebles/TitularidadPorInmuebleContainer.tsx';
 import ReporteAfectacionContainer from './Reportes/ReporteAfectacionContainer.tsx';
+import AppLayoutContainer from './components/layout/AppLayoutContainer.tsx';
 
 const { Title } = Typography;
 
 function Home() {
   return (
-    <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column' }}>
-      <Title level={1}>Registro Inmuebles</Title>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column', padding: 24 }}>
+      <Title level={2} style={{ marginBottom: 16 }}>Bienvenido</Title>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
         <Link to="/titularidades">Inmuebles por Persona</Link>
         <Link to="/titularidades-inmueble">Listar y Asociar Titulares a un Inmueble</Link>
         <Link to="/afectacion">Afectación a Vivienda (Bien de Familia)</Link>
         <Link to="/reportes/afectacion">Reporte: Afectaciones por Mes/Año/Departamento</Link>
-          <p>Tablas parametricas</p>
+        <p style={{ margin: '8px 0 0' }}>Tablas paramétricas</p>
         <Link to="/inmuebles">Ver Inmuebles</Link>
         <Link to="/ciudades">Ver Ciudades</Link>
         <Link to="/personas">Ver Personas</Link>
-
-
-
       </div>
-    </Layout>
+    </div>
   );
 }
 
@@ -67,16 +65,18 @@ function App() {
         />
       </div>
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/inmuebles" element={<InmuebleContainer />} />
-          <Route path="/ciudades" element={<Cities />} />
-          <Route path="/personas" element={<PersonaContainer />} />
-          <Route path="/titularidades" element={<TitularidadContainer />} />
-          <Route path="/titularidades-inmueble" element={<TitularidadPorInmuebleContainer />} />
-          <Route path="/afectacion" element={<AfectacionContainer />} />
-          <Route path="/reportes/afectacion" element={<ReporteAfectacionContainer />} />
-        </Routes>
+        <AppLayoutContainer>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/inmuebles" element={<InmuebleContainer />} />
+            <Route path="/ciudades" element={<Cities />} />
+            <Route path="/personas" element={<PersonaContainer />} />
+            <Route path="/titularidades" element={<TitularidadContainer />} />
+            <Route path="/titularidades-inmueble" element={<TitularidadPorInmuebleContainer />} />
+            <Route path="/afectacion" element={<AfectacionContainer />} />
+            <Route path="/reportes/afectacion" element={<ReporteAfectacionContainer />} />
+          </Routes>
+        </AppLayoutContainer>
       </Router>
     </ConfigProvider>
   )
