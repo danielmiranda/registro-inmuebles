@@ -1,7 +1,7 @@
 import { Card, Col, Empty, Flex, Row, Segmented, Select, Space, Spin, Table, Typography } from 'antd';
 import React from 'react';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export type YearMonthRow = { key: string; year: number; count: number };
 export type MonthRow = { key: string; year: number; month: number; monthName: string; count: number };
