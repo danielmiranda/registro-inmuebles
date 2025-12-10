@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Layout, Typography, Alert, Spin, Card, Space, Select, Button, Table, Form, InputNumber, Tag, Modal, message } from 'antd';
+import { Layout, Typography, Alert, Spin, Card, Space, Select, Button, Table, InputNumber, Tag, Modal, message } from 'antd';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import InmuebleFormModal, { type InmuebleFormValues } from './InmuebleFormModal';
 
@@ -158,7 +158,7 @@ const TitularidadPorInmueble: React.FC<Props> = ({
                 allowClear
                 style={{ minWidth: 360 }}
                 optionFilterProp="children"
-                filterOption={(input, option) => (option?.children as string).toLowerCase().includes(input.toLowerCase())}
+                filterOption={(input, option) => String(option?.children ?? '').toLowerCase().includes(input.toLowerCase())}
               >
                 {inmuebleOptions.map(o => (
                   <Option key={o.value} value={o.value}>{o.label}</Option>
@@ -186,7 +186,7 @@ const TitularidadPorInmueble: React.FC<Props> = ({
                   onChange={setPersonaToAdd}
                   style={{ minWidth: 360 }}
                   optionFilterProp="children"
-                  filterOption={(input, option) => (option?.children as string).toLowerCase().includes(input.toLowerCase())}
+                  filterOption={(input, option) => String(option?.children ?? '').toLowerCase().includes(input.toLowerCase())}
                 >
                   {personaOptions.map(o => (
                     <Option key={o.value} value={o.value}>{o.label}</Option>

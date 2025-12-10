@@ -1,5 +1,5 @@
 import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Form, InputNumber, Table, message } from 'antd';
-import { PlusOutlined, ExclamationCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import PersonaFormModal from './PersonaFormModal';
 import { normalizeText } from '../utils/text';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Option } = Select;
-const { confirm } = Modal;
+// no modal.confirm usage here
 
 export interface OptionItem { value: number; label: string }
 
@@ -50,7 +50,7 @@ const Titularidad: React.FC<Props> = ({
   error,
   noData = false,
   onCreate,
-  onDelete,
+  //onDelete,
   onCreatePersona,
 }) => {
   const navigate = useNavigate();
@@ -107,24 +107,7 @@ const Titularidad: React.FC<Props> = ({
     }
   ], [inmuebleLabel]);
 
-  const confirmDelete = (record: TitularidadRow) => {
-    confirm({
-      title: '¿Eliminar titularidad?',
-      icon: <ExclamationCircleOutlined />,
-      content: `Se eliminará la titularidad sobre ${inmuebleLabel(record.inmuebleId)}.`,
-      okText: 'Eliminar',
-      okType: 'danger',
-      cancelText: 'Cancelar',
-      onOk: async () => {
-        try {
-          await onDelete(record.id);
-          message.success('Titularidad eliminada');
-        } catch (e: any) {
-          message.error(e?.message || 'Error al eliminar');
-        }
-      }
-    });
-  };
+  // previously had a confirmDelete handler, removed because it's not used in the current UI
 
 
   const handleCreatePersona = async (values: { cuit: string; nombre: string; apellido: string }) => {
@@ -172,9 +155,10 @@ const Titularidad: React.FC<Props> = ({
                 allowClear
                 style={{ minWidth: 360 }}
                 optionFilterProp="children"
-                filterOption={(input, option) =>
-                  normalizeText((option?.children as string) ?? '').includes(normalizeText(input))
-                }
+                filterOption={(input, option) => {
+                  const text = normalizeText(String((option?.children as unknown) ?? ''));
+                  return text.includes(normalizeText(input));
+                }}
               >
                 {personaOptions.map(o => (
                   <Option key={o.value} value={o.value}>{o.label}</Option>
@@ -184,9 +168,6 @@ const Titularidad: React.FC<Props> = ({
             <Button icon={<PlusOutlined />} onClick={openPersonaModal}>Agregar persona</Button>
           </div>
 
-          <div>
-            <Button type="primary" icon={<PlusOutlined />} onClick={openModal} disabled={!selectedPersonaId}>Nueva titularidad</Button>
-          </div>
         </Space>
       </Card>
 
