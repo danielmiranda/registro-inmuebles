@@ -358,3 +358,6 @@ INSERT INTO TITULARIDAD (INMUEBLE_ID, PERSONA_ID, NUMERADOR, DENOMINADOR) VALUES
                                                                               (54, 1, 1, 2), -- Garcia Juan Carlos
                                                                               (54, 15, 1, 2), -- Acosta Guillermo Jose
                                                                               (55, 16, 1, 1); -- Medina Silvia Beatriz
+
+INSERT INTO AFECTACION_VIVIENDA (ESTADO, FECHA, INMUEBLE_ID, NRO_EXPEDIENTE, PERSONA_ID) VALUES
+('APROBADA', '2025-12-10', 54, 'EXP-00001/2025', 1);
