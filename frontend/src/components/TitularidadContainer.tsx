@@ -45,22 +45,40 @@ const TitularidadContainer = () => {
   const [error, setError] = useState<string | null>(null);
   const [noData, setNoData] = useState<boolean>(false);
 
-  const fetchBaseData = async () => {
-    setLoading(true);
-    try {
-      const [pRes, iRes] = await Promise.all([
-        axios.get('/personas'),
-        axios.get('/inmuebles'),
-      ]);
-      setPersonas(pRes.data);
-      setInmuebles(iRes.data);
-      setError(null);
-    } catch (err: any) {
-      setError('Error al cargar datos base (personas/inmuebles)');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchBaseData = async () => {
+        setLoading(true);
+        try {
+            const [pRes, iRes] = await Promise.allSettled([
+                axios.get('/personas'),
+                axios.get('/inmuebles'),
+            ]);
+
+            // Personas
+            if (pRes.status === 'fulfilled') {
+                setPersonas(pRes.value.data);
+            } else if (axios.isAxiosError(pRes.reason) && pRes.reason.response?.status === 400 && (pRes.reason.response.data as any)?.message === 'No hay información disponible') {
+                setPersonas([]);
+            } else if (pRes.status === 'rejected') {
+                // Si falló distinto a "no hay info", mostrar error relacionado con personas
+                setError('Error al cargar personas');
+            }
+
+            // Inmuebles
+            if (iRes.status === 'fulfilled') {
+                setInmuebles(iRes.value.data);
+            } else if (axios.isAxiosError(iRes.reason) && iRes.reason.response?.status === 400 && (iRes.reason.response.data as any)?.message === 'No hay información disponible') {
+                setInmuebles([]);
+            } else if (iRes.status === 'rejected') {
+                // Si falló distinto a "no hay info", mostrar error relacionado con inmuebles
+                setError(prev => prev ?? 'Error al cargar inmuebles');
+            }
+
+            // Si ambos vacíos por falta de datos, puedes setear un noData general si te sirve para la UI
+            // setNoData(personas.length === 0 && inmuebles.length === 0);
+        } finally {
+            setLoading(false);
+        }
+    };
 
   const fetchTitularidades = async (personaId: number) => {
     setListLoading(true);
@@ -141,6 +159,26 @@ const TitularidadContainer = () => {
     }
   };
 
+  const handleCreatePersona = async (values: { cuit: string; nombre: string; apellido: string }) => {
+    setFormLoading(true);
+    try {
+      await axios.post('/personas', values);
+      // Refrescar listado de personas para que aparezca en el Select
+      const pRes = await axios.get('/personas');
+      setPersonas(pRes.data);
+      const newItemPersona = pRes.data.find((p: any) => p.cuit === values.cuit);
+      if (newItemPersona) setSelectedPersonaId(newItemPersona.id);
+      setError(null);
+    } catch (err: any) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        throw new Error('Ya existe una persona con el CUIT especificado');
+      }
+      throw new Error('Error al crear la persona');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
   const personaOptions = useMemo(() => personas.map(p => ({
     value: p.id,
     label: `${p.nombre} ${p.apellido} (${p.cuit})`
@@ -165,6 +203,7 @@ const TitularidadContainer = () => {
       noData={noData}
       onCreate={handleCreate}
       onDelete={handleDelete}
+      onCreatePersona={handleCreatePersona}
     />
   );
 };

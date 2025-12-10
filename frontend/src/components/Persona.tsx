@@ -1,8 +1,9 @@
-import { Layout, Typography, Spin, Alert, Table, Button, Modal, Form, Input, Space, message } from 'antd';
+import { Layout, Typography, Spin, Alert, Table, Button, Modal, Space, message } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import type { PersonaCreateUpdateDTO, PersonaResponseDTO } from './PersonaContainer';
+import PersonaFormModal from './PersonaFormModal';
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -22,15 +23,6 @@ const Persona: React.FC<PersonaProps> = ({ personas, loading, formLoading, error
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [current, setCurrent] = useState<PersonaResponseDTO | null>(null);
-  const [form] = Form.useForm<PersonaCreateUpdateDTO>();
-
-  useEffect(() => {
-    if (isEditing && current) {
-      form.setFieldsValue({ cuit: current.cuit, nombre: current.nombre, apellido: current.apellido });
-    } else {
-      form.resetFields();
-    }
-  }, [isEditing, current, form]);
 
   const openCreate = () => {
     setIsEditing(false);
@@ -48,7 +40,6 @@ const Persona: React.FC<PersonaProps> = ({ personas, loading, formLoading, error
     setIsModalOpen(false);
     setIsEditing(false);
     setCurrent(null);
-    form.resetFields();
   };
 
   const handleSubmit = async (values: PersonaCreateUpdateDTO) => {
@@ -126,23 +117,14 @@ const Persona: React.FC<PersonaProps> = ({ personas, loading, formLoading, error
             Cargar persona
           </Button>
 
-          <Modal title={isEditing ? 'Editar Persona' : 'Agregar Persona'} open={isModalOpen} onCancel={closeModal} footer={null} width={520}>
-            <Form form={form} layout="vertical" onFinish={handleSubmit} autoComplete="off">
-              <Form.Item label="CUIT" name="cuit" rules={[{ required: true, message: 'Ingrese el CUIT' }, { min: 3, message: 'CUIT muy corto' }]}>
-                <Input placeholder="20-12345678-3" />
-              </Form.Item>
-              <Form.Item label="Nombre" name="nombre" rules={[{ required: true, message: 'Ingrese el nombre' }]}>
-                <Input placeholder="Nombre" />
-              </Form.Item>
-              <Form.Item label="Apellido" name="apellido" rules={[{ required: true, message: 'Ingrese el apellido' }]}>
-                <Input placeholder="Apellido" />
-              </Form.Item>
-              <Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
-                <Button onClick={closeModal} style={{ marginRight: 8 }}>Cancelar</Button>
-                <Button type="primary" htmlType="submit" loading={formLoading}>{isEditing ? 'Guardar cambios' : 'Crear persona'}</Button>
-              </Form.Item>
-            </Form>
-          </Modal>
+          <PersonaFormModal
+            open={isModalOpen}
+            loading={formLoading}
+            isEditing={isEditing}
+            initialValues={isEditing && current ? { cuit: current.cuit, nombre: current.nombre, apellido: current.apellido } : undefined}
+            onCancel={closeModal}
+            onSubmit={handleSubmit}
+          />
         </div>
       </Layout>
     );
@@ -161,23 +143,14 @@ const Persona: React.FC<PersonaProps> = ({ personas, loading, formLoading, error
         pagination={{ pageSize: 10 }}
       />
 
-      <Modal title={isEditing ? 'Editar Persona' : 'Agregar Persona'} open={isModalOpen} onCancel={closeModal} footer={null} width={520}>
-        <Form form={form} layout="vertical" onFinish={handleSubmit} autoComplete="off">
-          <Form.Item label="CUIT" name="cuit" rules={[{ required: true, message: 'Ingrese el CUIT' }, { min: 3, message: 'CUIT muy corto' }]}>
-            <Input placeholder="20-12345678-3" />
-          </Form.Item>
-          <Form.Item label="Nombre" name="nombre" rules={[{ required: true, message: 'Ingrese el nombre' }]}>
-            <Input placeholder="Nombre" />
-          </Form.Item>
-          <Form.Item label="Apellido" name="apellido" rules={[{ required: true, message: 'Ingrese el apellido' }]}>
-            <Input placeholder="Apellido" />
-          </Form.Item>
-          <Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
-            <Button onClick={closeModal} style={{ marginRight: 8 }}>Cancelar</Button>
-            <Button type="primary" htmlType="submit" loading={formLoading}>{isEditing ? 'Guardar cambios' : 'Crear persona'}</Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+      <PersonaFormModal
+        open={isModalOpen}
+        loading={formLoading}
+        isEditing={isEditing}
+        initialValues={isEditing && current ? { cuit: current.cuit, nombre: current.nombre, apellido: current.apellido } : undefined}
+        onCancel={closeModal}
+        onSubmit={handleSubmit}
+      />
     </Layout>
   );
 };

@@ -1,6 +1,7 @@
 import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Form, InputNumber, Table, message } from 'antd';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
+import PersonaFormModal from './PersonaFormModal';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -30,6 +31,7 @@ interface Props {
   noData?: boolean;
   onCreate: (payload: { inmuebleId: number; numerador: number; denominador: number }) => Promise<void> | void;
   onDelete: (id: number) => Promise<void> | void;
+  onCreatePersona: (values: { cuit: string; nombre: string; apellido: string }) => Promise<void> | void;
 }
 
 const Titularidad: React.FC<Props> = ({
@@ -45,9 +47,12 @@ const Titularidad: React.FC<Props> = ({
   noData = false,
   onCreate,
   onDelete,
+  onCreatePersona,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm<{ inmuebleId: number; numerador: number; denominador: number }>();
+  const [isPersonaModalOpen, setIsPersonaModalOpen] = useState(false);
+  const [creatingPersona, setCreatingPersona] = useState(false);
 
   useEffect(() => {
     if (!isModalOpen) form.resetFields();
@@ -55,6 +60,9 @@ const Titularidad: React.FC<Props> = ({
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openPersonaModal = () => setIsPersonaModalOpen(true);
+  const closePersonaModal = () => setIsPersonaModalOpen(false);
 
   const handleCreate = async (values: { inmuebleId: number; numerador: number; denominador: number }) => {
     try {
@@ -103,6 +111,19 @@ const Titularidad: React.FC<Props> = ({
     });
   };
 
+  const handleCreatePersona = async (values: { cuit: string; nombre: string; apellido: string }) => {
+    setCreatingPersona(true);
+    try {
+      await onCreatePersona(values);
+      message.success('Persona creada exitosamente');
+      closePersonaModal();
+    } catch (e: any) {
+      message.error(e?.message || 'Error al crear la persona');
+    } finally {
+      setCreatingPersona(false);
+    }
+  };
+
   if (loading) {
     return (
       <Layout style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -124,22 +145,25 @@ const Titularidad: React.FC<Props> = ({
       <Card style={{ marginBottom: 16 }}>
         <Space direction="vertical" style={{ width: '100%' }}>
           <Title level={3} style={{ margin: 0 }}>Asociar titularidades a Personas</Title>
-          <div>
-            <span style={{ marginRight: 8 }}>Persona:</span>
-            <Select
-              showSearch
-              placeholder="Seleccione una persona"
-              value={selectedPersonaId as number | undefined}
-              onChange={(v) => onChangePersona(v)}
-              allowClear
-              style={{ minWidth: 360 }}
-              optionFilterProp="children"
-              filterOption={(input, option) => (option?.children as string).toLowerCase().includes(input.toLowerCase())}
-            >
-              {personaOptions.map(o => (
-                <Option key={o.value} value={o.value}>{o.label}</Option>
-              ))}
-            </Select>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <div>
+              <span style={{ marginRight: 8 }}>Persona:</span>
+              <Select
+                showSearch
+                placeholder="Seleccione una persona"
+                value={selectedPersonaId as number | undefined}
+                onChange={(v) => onChangePersona(v)}
+                allowClear
+                style={{ minWidth: 360 }}
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.children as string).toLowerCase().includes(input.toLowerCase())}
+              >
+                {personaOptions.map(o => (
+                  <Option key={o.value} value={o.value}>{o.label}</Option>
+                ))}
+              </Select>
+            </div>
+            <Button icon={<PlusOutlined />} onClick={openPersonaModal}>Agregar persona</Button>
           </div>
 
           <div>
@@ -174,7 +198,7 @@ const Titularidad: React.FC<Props> = ({
 
       <Modal title="Nueva titularidad" open={isModalOpen} onCancel={closeModal} footer={null} width={560} destroyOnClose>
         <Form form={form} layout="vertical" onFinish={handleCreate} autoComplete="off">
-          <Form.Item label="Inmueble" name="inmuebleId" rules={[{ required: true, message: 'Seleccione un inmueble' }]}>
+          <Form.Item label="Inmueble" name="inmuebleId" rules={[{ required: true, message: 'Seleccione un inmueble' }]}> 
             <Select showSearch placeholder="Seleccione un inmueble" optionFilterProp="children">
               {inmuebleOptions.map(o => (
                 <Option key={o.value} value={o.value}>{o.label}</Option>
@@ -195,6 +219,13 @@ const Titularidad: React.FC<Props> = ({
           </Form.Item>
         </Form>
       </Modal>
+
+      <PersonaFormModal
+        open={isPersonaModalOpen}
+        loading={creatingPersona}
+        onCancel={closePersonaModal}
+        onSubmit={handleCreatePersona}
+      />
     </Layout>
   );
 };
