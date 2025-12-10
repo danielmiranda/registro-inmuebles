@@ -17,12 +17,15 @@ function Home() {
       <Title level={1}>Registro Inmuebles</Title>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
         <Link to="/titularidades">Inmuebles por Persona</Link>
+        <Link to="/titularidades-inmueble">Listar y Asociar Titulares a un Inmueble</Link>
+        <Link to="/afectacion">Afectación a Vivienda (Bien de Familia)</Link>
+          <p>Tablas parametricas</p>
         <Link to="/inmuebles">Ver Inmuebles</Link>
         <Link to="/ciudades">Ver Ciudades</Link>
         <Link to="/personas">Ver Personas</Link>
 
-        <Link to="/titularidades-inmueble">Titularidades por Inmueble</Link>
-        <Link to="/afectacion">Afectación Bien de Familia</Link>
+
+
       </div>
     </Layout>
   );
