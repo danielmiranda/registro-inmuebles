@@ -20,6 +20,7 @@ export interface TitularidadRow {
   porcentaje: number;
   ciudadNombre?: string;
   departamentoNombre?: string;
+  afectacionAprobada?: boolean;
 }
 
 interface Props {
@@ -91,6 +92,11 @@ const Titularidad: React.FC<Props> = ({
     { title: 'Departamento', key: 'departamento', render: (_: any, r: TitularidadRow) => r.departamentoNombre ?? '-' },
     { title: 'Fracción', key: 'fraccion', render: (_: any, r: TitularidadRow) => `${r.numerador}/${r.denominador}` },
     { title: 'Porcentaje', dataIndex: 'porcentaje', key: 'porcentaje', render: (v: number) => `${v.toFixed(2)}%` },
+    { title: 'Afectación', key: 'afectacion', render: (_: any, r: TitularidadRow) => (
+      r.afectacionAprobada
+        ? <Alert type="success" message="Afectación aprobada" showIcon />
+        : null
+    ) },
     {
       title: 'Acciones', key: 'actions', width: 180,
       render: (_: any, record: TitularidadRow) => (
