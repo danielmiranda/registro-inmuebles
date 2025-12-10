@@ -1,4 +1,5 @@
 import { Layout, Typography, Alert, Spin, Card, Space, Select, Button, Modal, Form, Input, DatePicker, message, InputNumber, Tag } from 'antd';
+import dayjs from 'dayjs';
 import { PlusOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -68,8 +69,19 @@ const Afectacion: React.FC<Props> = ({
   useEffect(() => {
     if (selectedPersonaId != null) {
       afForm.setFieldsValue({ personaId: selectedPersonaId });
+    } else {
+      afForm.setFieldsValue({ personaId: undefined });
     }
   }, [selectedPersonaId, afForm]);
+
+  // Sincronizar el inmueble seleccionado arriba con el formulario (campo oculto)
+  useEffect(() => {
+    if (selectedInmuebleId != null) {
+      afForm.setFieldsValue({ inmuebleId: selectedInmuebleId });
+    } else {
+      afForm.setFieldsValue({ inmuebleId: undefined });
+    }
+  }, [selectedInmuebleId, afForm]);
 
   // Al cambiar la persona, limpiar el inmueble seleccionado para evitar valores que ya no están en la lista filtrada
   useEffect(() => {
@@ -88,6 +100,17 @@ const Afectacion: React.FC<Props> = ({
   ]), []);
 
   const personaId = Form.useWatch('personaId', afForm) as number | undefined;
+  const inmuebleId = Form.useWatch('inmuebleId', afForm) as number | undefined;
+
+  const selectedPersonaLabel = useMemo(() => {
+    const found = personaOptions.find(o => o.value === (personaId ?? selectedPersonaId ?? -1));
+    return found?.label || '';
+  }, [personaOptions, personaId, selectedPersonaId]);
+
+  const selectedInmuebleLabel = useMemo(() => {
+    const found = inmuebleOptions.find(o => o.value === (inmuebleId ?? selectedInmuebleId ?? -1));
+    return found?.label || '';
+  }, [inmuebleOptions, inmuebleId, selectedInmuebleId]);
 
   const personaHasInmueble = selectedInmuebleId ? titularInmuebleIds.includes(selectedInmuebleId) : true;
 
@@ -178,7 +201,7 @@ const Afectacion: React.FC<Props> = ({
 
   return (
     <Layout style={{ padding: 24, minHeight: '100vh' }}>
-      <Title level={2}>Afectación como Bien de Familia</Title>
+      <Title level={2}>Afectación de Vivienda (Bien de Familia)</Title>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Card title="Datos base">
           <Space direction="vertical" style={{ width: '100%' }} size="middle">
@@ -281,12 +304,28 @@ const Afectacion: React.FC<Props> = ({
         </Card>
 
         <Card title="Afectación">
-          <Form form={afForm} layout="vertical" onFinish={submitAfectacion}>
-            <Form.Item name="personaId" label="Persona" rules={[{ required: true, message: 'Seleccione una persona' }]}>
-              <Select options={personaOptions} placeholder="Seleccione una persona" allowClear onChange={(v) => onChangePersona(v ?? null)} />
+          <Form form={afForm} layout="vertical" onFinish={submitAfectacion} initialValues={{ estado: 'APROBADA', fecha: dayjs() }}>
+            {/* Mostrar la persona seleccionada arriba como etiqueta y mantener el campo oculto para el valor */}
+            <Form.Item label="Persona Iniciadora del Trámite">
+              {selectedPersonaLabel ? (
+                <Tag color="blue">{selectedPersonaLabel}</Tag>
+              ) : (
+                <Tag>Sin selección</Tag>
+              )}
             </Form.Item>
-            <Form.Item name="inmuebleId" label="Inmueble" rules={[{ required: true, message: 'Seleccione un inmueble' }]}>
-              <Select options={inmuebleOptions} placeholder="Seleccione un inmueble" allowClear />
+            <Form.Item name="personaId" hidden rules={[{ required: true, message: 'Seleccione una persona en la parte superior' }]}>
+              <Input type="hidden" readOnly />
+            </Form.Item>
+            <Form.Item label="Inmueble">
+              {selectedInmuebleLabel ? (
+                <Tag color="green">{selectedInmuebleLabel}</Tag>
+              ) : (
+                <Tag>Sin selección</Tag>
+              )}
+            </Form.Item>
+            {/* Campo oculto para mantener el valor del inmueble seleccionado */}
+            <Form.Item name="inmuebleId" hidden rules={[{ required: true, message: 'Seleccione un inmueble en la parte superior' }]}>
+              <Input type="hidden" readOnly />
             </Form.Item>
             <Form.Item name="estado" label="Estado" rules={[{ required: true, message: 'Seleccione el estado' }]}>
               <Select placeholder="Seleccione">
@@ -299,7 +338,7 @@ const Afectacion: React.FC<Props> = ({
               <Input placeholder="EXP-123/2025" />
             </Form.Item>
             <Form.Item name="fecha" label="Fecha" rules={[{ required: true, message: 'Seleccione la fecha' }]}>
-              <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
+              <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={formLoading}>Registrar afectación</Button>
