@@ -362,6 +362,13 @@ INSERT INTO TITULARIDAD (INMUEBLE_ID, PERSONA_ID, NUMERADOR, DENOMINADOR) VALUES
 INSERT INTO AFECTACION_VIVIENDA (ESTADO, FECHA, INMUEBLE_ID, NRO_EXPEDIENTE, PERSONA_ID) VALUES
                                                                                              ('APROBADA', '2025-12-10', 54, 'EXP-00001/2025', 1),
                                                                                              ('APROBADA', '2025-12-10', 55, 'EXP-00002/2025', 16),
-                                                                                             ('APROBADA', '2025-12-01', 3, 'EXP-00001/2025', 91),
-                                                                                             ('APROBADA', '2025-10-10', 6, 'EXP-00001/2025', 72),
-                                                                                             ('APROBADA', '2025-11-10', 9, 'EXP-00001/2025', 46);
+                                                                                             ('APROBADA', '2025-12-01', 3, 'EXP-00003/2025', 91),
+                                                                                             ('APROBADA', '2025-10-10', 6, 'EXP-00004/2025', 72),
+                                                                                             ('APROBADA', '2025-11-13', 9, 'EXP-00005/2025', 46),
+                                                                                             ('APROBADA', '2025-11-12', 10, 'EXP-00006/2025', 27),
+                                                                                             ('APROBADA', '2025-11-10', 11, 'EXP-00007/2025', 48),
+                                                                                             ('APROBADA', '2025-05-10', 12, 'EXP-00008/2025', 39),
+                                                                                             ('APROBADA', '2025-03-10', 14, 'EXP-00009/2025', 62),
+                                                                                             ('APROBADA', '2025-02-10', 18, 'EXP-00010/2025', 69),
+                                                                                             ('APROBADA', '2024-12-10', 19, 'EXP-00001/2024', 81),
+                                                                                             ('APROBADA', '2024-11-10', 21, 'EXP-00002/2024', 44);
