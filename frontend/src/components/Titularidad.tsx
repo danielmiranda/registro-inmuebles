@@ -1,7 +1,7 @@
 import { Layout, Typography, Alert, Spin, Select, Card, Space, Button, Modal, Form, InputNumber, Table, message } from 'antd';
 import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
-import PersonaFormModal from './PersonaFormModal';
+import PersonaFormModal from '../Personas/PersonaFormModal.tsx';
 import { normalizeText } from '../utils/text';
 import { useNavigate } from 'react-router-dom';
 

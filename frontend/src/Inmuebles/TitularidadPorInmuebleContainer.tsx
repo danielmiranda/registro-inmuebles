@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import TitularidadPorInmueble, { type TitularidadDraftRow } from './TitularidadPorInmueble';
+import TitularidadPorInmueble, { type TitularidadDraftRow } from './TitularidadPorInmueble.tsx';
 import { useLocation } from 'react-router-dom';
 
 export interface PersonaDTO {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Inmueble from './Inmueble'; // Import the presentation component
+import Inmueble from './Inmueble.tsx'; // Import the presentation component
 
 interface CiudadDTO {
     id: number;

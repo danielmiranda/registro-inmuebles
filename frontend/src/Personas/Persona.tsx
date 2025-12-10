@@ -2,8 +2,8 @@ import { Layout, Typography, Spin, Alert, Table, Button, Modal, Space, message }
 import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useMemo, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
-import type { PersonaCreateUpdateDTO, PersonaResponseDTO } from './PersonaContainer';
-import PersonaFormModal from './PersonaFormModal';
+import type { PersonaCreateUpdateDTO, PersonaResponseDTO } from './PersonaContainer.tsx';
+import PersonaFormModal from './PersonaFormModal.tsx';
 
 const { Title } = Typography;
 const { confirm } = Modal;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Persona from './Persona';
+import Persona from './Persona.tsx';
 
 export interface PersonaCreateUpdateDTO {
   cuit: string;

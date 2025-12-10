@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Layout, Typography, Alert, Spin, Card, Space, Select, Button, Table, InputNumber, Tag, Modal, message } from 'antd';
 import { PlusOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import InmuebleFormModal, { type InmuebleFormValues } from './InmuebleFormModal';
+import InmuebleFormModal, { type InmuebleFormValues } from './InmuebleFormModal.tsx';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
