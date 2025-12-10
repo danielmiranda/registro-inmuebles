@@ -290,7 +290,7 @@ const Afectacion: React.FC<Props> = ({
                       </div>
                     )}
                   </div>
-                  <Button onClick={() => setShowInmuebleModal(true)} icon={<PlusOutlined />}>Nuevo</Button>
+
                 </div>
                 {/* Mensaje cuando el inmueble seleccionado no corresponde a titularidades de la persona */}
                 {!personaHasInmueble && personaId && selectedInmuebleId && (
