@@ -8,6 +8,7 @@ import PersonaContainer from './Personas/PersonaContainer.tsx';
 import TitularidadContainer from './Titularidad/TitularidadContainer.tsx';
 import AfectacionContainer from './Afectacion/AfectacionContainer.tsx';
 import TitularidadPorInmuebleContainer from './Inmuebles/TitularidadPorInmuebleContainer.tsx';
+import ReporteAfectacion from './Reportes/ReporteAfectacion.tsx';
 
 const { Title } = Typography;
 
@@ -19,6 +20,7 @@ function Home() {
         <Link to="/titularidades">Inmuebles por Persona</Link>
         <Link to="/titularidades-inmueble">Listar y Asociar Titulares a un Inmueble</Link>
         <Link to="/afectacion">Afectación a Vivienda (Bien de Familia)</Link>
+        <Link to="/reportes/afectacion">Reporte: Afectaciones por Mes/Año/Departamento</Link>
           <p>Tablas parametricas</p>
         <Link to="/inmuebles">Ver Inmuebles</Link>
         <Link to="/ciudades">Ver Ciudades</Link>
@@ -73,6 +75,7 @@ function App() {
           <Route path="/titularidades" element={<TitularidadContainer />} />
           <Route path="/titularidades-inmueble" element={<TitularidadPorInmuebleContainer />} />
           <Route path="/afectacion" element={<AfectacionContainer />} />
+          <Route path="/reportes/afectacion" element={<ReporteAfectacion />} />
         </Routes>
       </Router>
     </ConfigProvider>
