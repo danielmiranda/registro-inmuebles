@@ -357,4 +357,4 @@ INSERT INTO TITULARIDAD (INMUEBLE_ID, PERSONA_ID, NUMERADOR, DENOMINADOR) VALUES
                                                                               (53, 1, 1, 1), -- Garcia Juan Carlos
                                                                               (54, 1, 1, 2), -- Garcia Juan Carlos
                                                                               (54, 15, 1, 2), -- Acosta Guillermo Jose
-                                                                              (25, 16, 1, 1); -- Medina Silvia Beatriz
+                                                                              (55, 16, 1, 1); -- Medina Silvia Beatriz
