@@ -65,8 +65,12 @@ El siguiente diagrama ilustra el modelo de entidades, la normalización geográf
 Ejecuta todo el entorno con un solo comando. No requiere Java ni Node instalados localmente.
 
 ```bash
+git clone https://github.com/danielmiranda/registro-inmuebles.git
+cd registro-inmuebles
 docker-compose up --build
 ```
+
+Ir a las siguientes URL para revisar la aplicación
 
 * Frontend: http://localhost:5173
 * Backend API: http://localhost:8080/api/v1
