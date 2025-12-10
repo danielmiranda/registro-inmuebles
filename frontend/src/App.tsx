@@ -8,7 +8,7 @@ import PersonaContainer from './Personas/PersonaContainer.tsx';
 import TitularidadContainer from './Titularidad/TitularidadContainer.tsx';
 import AfectacionContainer from './Afectacion/AfectacionContainer.tsx';
 import TitularidadPorInmuebleContainer from './Inmuebles/TitularidadPorInmuebleContainer.tsx';
-import ReporteAfectacion from './Reportes/ReporteAfectacion.tsx';
+import ReporteAfectacionContainer from './Reportes/ReporteAfectacionContainer.tsx';
 
 const { Title } = Typography;
 
@@ -75,7 +75,7 @@ function App() {
           <Route path="/titularidades" element={<TitularidadContainer />} />
           <Route path="/titularidades-inmueble" element={<TitularidadPorInmuebleContainer />} />
           <Route path="/afectacion" element={<AfectacionContainer />} />
-          <Route path="/reportes/afectacion" element={<ReporteAfectacion />} />
+          <Route path="/reportes/afectacion" element={<ReporteAfectacionContainer />} />
         </Routes>
       </Router>
     </ConfigProvider>

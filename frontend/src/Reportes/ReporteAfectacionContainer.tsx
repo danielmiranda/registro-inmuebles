@@ -1,8 +1,9 @@
-import { Card, Col, DatePicker, Empty, Flex, Row, Select, Space, Spin, Table, Typography, message } from 'antd';
+import { message } from 'antd';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
+import ReporteAfectacionView from './ReporteAfectacionView';
 
-const { Title, Text } = Typography;
+// Contenedor: maneja datos, filtros y computos; delega render a ReporteAfectacionView
 
 interface AfectacionDTO {
   id: number;
@@ -31,7 +32,7 @@ function ymKey(ym: YearMonth) {
 
 const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-const ReporteAfectacion = () => {
+const ReporteAfectacionContainer = () => {
   const [loading, setLoading] = useState(true);
   const [afectaciones, setAfectaciones] = useState<AfectacionDTO[]>([]);
   const [inmuebles, setInmuebles] = useState<InmuebleDTO[]>([]);
@@ -42,6 +43,7 @@ const ReporteAfectacion = () => {
   const [filterYear, setFilterYear] = useState<number | undefined>(undefined);
   const [filterMonth, setFilterMonth] = useState<number | undefined>(undefined);
   const [filterDepartamentoId, setFilterDepartamentoId] = useState<number | undefined>(undefined);
+  const [viewMode, setViewMode] = useState<'tabla' | 'grafico'>('tabla');
 
   useEffect(() => {
     const load = async () => {
@@ -145,105 +147,29 @@ const ReporteAfectacion = () => {
 
   const monthOptions = useMemo(() => monthNames.map((name, idx) => ({ value: idx+1, label: name })), []);
 
-  if (loading) {
-    return <Flex align="center" justify="center" style={{ minHeight: '60vh' }}><Spin /></Flex>;
-  }
-
   const noData = afectaciones.length === 0;
 
   return (
-    <Space direction="vertical" style={{ width: '100%', padding: 16 }} size={16}>
-      <Title level={2}>Reporte de Afectaciones de Vivienda</Title>
-      <Card size="small">
-        <Space wrap>
-          <div>
-            <Text strong>Año:</Text>
-            <Select
-              allowClear
-              placeholder="Todos"
-              style={{ width: 160, marginLeft: 8 }}
-              options={yearsAvailable.map(y => ({ value: y, label: String(y) }))}
-              value={filterYear}
-              onChange={(v) => setFilterYear(v)}
-            />
-          </div>
-          <div>
-            <Text strong>Mes:</Text>
-            <Select
-              allowClear
-              placeholder="Todos"
-              style={{ width: 180, marginLeft: 8 }}
-              options={monthOptions}
-              value={filterMonth}
-              onChange={(v) => setFilterMonth(v)}
-            />
-          </div>
-          <div>
-            <Text strong>Departamento:</Text>
-            <Select
-              allowClear
-              showSearch
-              placeholder="Todos"
-              style={{ width: 260, marginLeft: 8 }}
-              options={departamentos.map(d => ({ value: d.id, label: d.nombre }))}
-              value={filterDepartamentoId}
-              onChange={(v) => setFilterDepartamentoId(v)}
-              optionFilterProp="label"
-            />
-          </div>
-        </Space>
-      </Card>
-
-      {error && <Text type="danger">{error}</Text>}
-
-      {noData ? (
-        <Empty description="No hay afectaciones registradas" />
-      ) : (
-        <Row gutter={[16, 16]}>
-          <Col span={24} md={12}>
-            <Card title="Cantidad por Año">
-              <Table
-                dataSource={dataByYear}
-                pagination={false}
-                size="small"
-                columns={[
-                  { title: 'Año', dataIndex: 'year' },
-                  { title: 'Cantidad', dataIndex: 'count' },
-                ]}
-              />
-            </Card>
-          </Col>
-          <Col span={24} md={12}>
-            <Card title="Cantidad por Mes (Año-Mes)">
-              <Table
-                dataSource={dataByMonth}
-                pagination={false}
-                size="small"
-                columns={[
-                  { title: 'Año', dataIndex: 'year' },
-                  { title: 'Mes', dataIndex: 'monthName' },
-                  { title: 'Cantidad', dataIndex: 'count' },
-                ]}
-              />
-            </Card>
-          </Col>
-          <Col span={24}>
-            <Card title="Cantidad por Departamento">
-              <Table
-                dataSource={dataByDepartamento}
-                pagination={false}
-                size="small"
-                columns={[
-                  { title: 'Departamento', dataIndex: 'departamento' },
-                  { title: 'Cantidad', dataIndex: 'count' },
-                ]}
-              />
-            </Card>
-          </Col>
-        </Row>
-      )}
-    </Space>
+    <ReporteAfectacionView
+      yearsAvailable={yearsAvailable}
+      monthOptions={monthOptions}
+      departamentos={departamentos}
+      filterYear={filterYear}
+      filterMonth={filterMonth}
+      filterDepartamentoId={filterDepartamentoId}
+      onChangeYear={setFilterYear}
+      onChangeMonth={setFilterMonth}
+      onChangeDepartamento={setFilterDepartamentoId}
+      viewMode={viewMode}
+      onChangeViewMode={(v) => setViewMode(v)}
+      loading={loading}
+      error={error}
+      noData={noData}
+      dataByYear={dataByYear}
+      dataByMonth={dataByMonth}
+      dataByDepartamento={dataByDepartamento}
+    />
   );
 };
 
-export default ReporteAfectacion;
+export default ReporteAfectacionContainer;
