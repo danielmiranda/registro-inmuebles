@@ -125,7 +125,6 @@ const ReporteAfectacionView: React.FC<Props> = ({
 
   return (
     <Space direction="vertical" style={{ width: '100%', padding: 16 }} size={16}>
-      <Title level={2}>Reporte de Afectaciones de Vivienda</Title>
       <Card size="small">
         <Space wrap>
           <div>

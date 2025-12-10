@@ -15,17 +15,11 @@ const { Title } = Typography;
 
 function Home() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column', padding: 24 }}>
-      <Title level={2} style={{ marginBottom: 16 }}>Bienvenido</Title>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
-        <Link to="/titularidades">Inmuebles por Persona</Link>
-        <Link to="/titularidades-inmueble">Listar y Asociar Titulares a un Inmueble</Link>
-        <Link to="/afectacion">Afectación a Vivienda (Bien de Familia)</Link>
-        <Link to="/reportes/afectacion">Reporte: Afectaciones por Mes/Año/Departamento</Link>
-        <p style={{ margin: '8px 0 0' }}>Tablas paramétricas</p>
-        <Link to="/inmuebles">Ver Inmuebles</Link>
-        <Link to="/ciudades">Ver Ciudades</Link>
-        <Link to="/personas">Ver Personas</Link>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', width: '100%', flexDirection: 'column', padding: 24, gap: 24 }}>
+
+      <div style={{ width: '100%', maxWidth: 1200 }}>
+        <Title level={3} style={{ margin: '16px 0' }}>Reporte de Afectaciones</Title>
+        <ReporteAfectacionContainer />
       </div>
     </div>
   );
