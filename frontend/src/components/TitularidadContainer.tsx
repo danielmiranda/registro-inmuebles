@@ -17,6 +17,18 @@ export interface InmuebleResponseDTO {
   departamentoId: number;
 }
 
+interface CiudadDTO {
+  id: number;
+  nombre: string;
+  codigoCiudad: number;
+}
+
+interface DepartamentoDTO {
+  id: number;
+  nombre: string;
+  codigoDepartamento: number;
+}
+
 export interface TitularidadResponseDTO {
   id: number;
   personaId: number;
@@ -36,6 +48,8 @@ const TitularidadContainer = () => {
   const [personas, setPersonas] = useState<PersonaResponseDTO[]>([]);
   const [inmuebles, setInmuebles] = useState<InmuebleResponseDTO[]>([]);
   const [titularidades, setTitularidades] = useState<TitularidadResponseDTO[]>([]);
+  const [ciudades, setCiudades] = useState<CiudadDTO[]>([]);
+  const [departamentos, setDepartamentos] = useState<DepartamentoDTO[]>([]);
 
   const [selectedPersonaId, setSelectedPersonaId] = useState<number | null>(null);
 
@@ -48,9 +62,11 @@ const TitularidadContainer = () => {
     const fetchBaseData = async () => {
         setLoading(true);
         try {
-            const [pRes, iRes] = await Promise.allSettled([
+            const [pRes, iRes, cRes, dRes] = await Promise.allSettled([
                 axios.get('/personas'),
                 axios.get('/inmuebles'),
+                axios.get('/ciudades'),
+                axios.get('/departamentos'),
             ]);
 
             // Personas
@@ -73,6 +89,24 @@ const TitularidadContainer = () => {
                 setError(prev => prev ?? 'Error al cargar inmuebles');
             }
 
+            // Ciudades
+            if (cRes.status === 'fulfilled') {
+                setCiudades(cRes.value.data);
+            } else if (axios.isAxiosError(cRes.reason) && cRes.reason.response?.status === 400 && (cRes.reason.response.data as any)?.message === 'No hay información disponible') {
+                setCiudades([]);
+            } else if (cRes.status === 'rejected') {
+                setError(prev => prev ?? 'Error al cargar ciudades');
+            }
+
+            // Departamentos
+            if (dRes.status === 'fulfilled') {
+                setDepartamentos(dRes.value.data);
+            } else if (axios.isAxiosError(dRes.reason) && dRes.reason.response?.status === 400 && (dRes.reason.response.data as any)?.message === 'No hay información disponible') {
+                setDepartamentos([]);
+            } else if (dRes.status === 'rejected') {
+                setError(prev => prev ?? 'Error al cargar departamentos');
+            }
+
             // Si ambos vacíos por falta de datos, puedes setear un noData general si te sirve para la UI
             // setNoData(personas.length === 0 && inmuebles.length === 0);
         } finally {
@@ -84,7 +118,18 @@ const TitularidadContainer = () => {
     setListLoading(true);
     try {
       const res = await axios.get('/titularidades', { params: { personaId } });
-      setTitularidades(res.data);
+      // Enriquecer con ciudad y departamento (nombres)
+      const inmueblesMap = new Map(inmuebles.map(i => [i.id, i]));
+      const ciudadMap = new Map(ciudades.map(c => [c.id, c.nombre]));
+      const deptoMap = new Map(departamentos.map(d => [d.id, d.nombre]));
+
+      const enriched = res.data.map((t: TitularidadResponseDTO) => {
+        const inm = inmueblesMap.get(t.inmuebleId);
+        const ciudadNombre = inm ? ciudadMap.get(inm.ciudadId) : undefined;
+        const departamentoNombre = inm ? deptoMap.get(inm.departamentoId) : undefined;
+        return { ...t, ciudadNombre, departamentoNombre } as any;
+      });
+      setTitularidades(enriched);
       setNoData(false);
       setError(null);
     } catch (err: any) {

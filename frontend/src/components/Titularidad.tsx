@@ -17,6 +17,8 @@ export interface TitularidadRow {
   numerador: number;
   denominador: number;
   porcentaje: number;
+  ciudadNombre?: string;
+  departamentoNombre?: string;
 }
 
 interface Props {
@@ -83,6 +85,8 @@ const Titularidad: React.FC<Props> = ({
   const columns = useMemo(() => [
     { title: 'ID', dataIndex: 'id', key: 'id', width: 80 },
     { title: 'Inmueble', key: 'inmueble', render: (_: any, r: TitularidadRow) => inmuebleLabel(r.inmuebleId) },
+    { title: 'Ciudad', key: 'ciudad', render: (_: any, r: TitularidadRow) => r.ciudadNombre ?? '-' },
+    { title: 'Departamento', key: 'departamento', render: (_: any, r: TitularidadRow) => r.departamentoNombre ?? '-' },
     { title: 'Fracción', key: 'fraccion', render: (_: any, r: TitularidadRow) => `${r.numerador}/${r.denominador}` },
     { title: 'Porcentaje', dataIndex: 'porcentaje', key: 'porcentaje', render: (v: number) => `${v.toFixed(2)}%` },
     {
@@ -146,7 +150,7 @@ const Titularidad: React.FC<Props> = ({
     <Layout style={{ padding: 24 }}>
       <Card style={{ marginBottom: 16 }}>
         <Space direction="vertical" style={{ width: '100%' }}>
-          <Title level={3} style={{ margin: 0 }}>Asociar titularidades a Personas</Title>
+          <Title level={3} style={{ margin: 0 }}>Inmuebles por Personas</Title>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <div>
               <span style={{ marginRight: 8 }}>Persona:</span>
