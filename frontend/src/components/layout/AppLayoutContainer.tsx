@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import {
-    HomeOutlined, ApartmentOutlined, TeamOutlined, IdcardOutlined, FileTextOutlined, EnvironmentOutlined,
+    HomeOutlined, ApartmentOutlined, TeamOutlined, IdcardOutlined, EnvironmentOutlined,
     HomeFilled
 } from '@ant-design/icons';
 import AppLayout, { type AppMenuItem } from './AppLayout';
@@ -23,7 +23,6 @@ export default function AppLayoutContainer({ children }: Props) {
     { key: '/titularidades', icon: <IdcardOutlined />, label: 'Inmuebles por Persona' },
     { key: '/titularidades-inmueble', icon: <TeamOutlined />, label: 'Titulares por Inmueble' },
     { key: '/afectacion', icon: <HomeOutlined />, label: 'Afectación Vivienda' },
-    { key: '/reportes/afectacion', icon: <FileTextOutlined />, label: 'Reporte Afectaciones' },
     { key: '/inmuebles', icon: <ApartmentOutlined />, label: 'Inmuebles' },
     { key: '/ciudades', icon: <EnvironmentOutlined />, label: 'Ciudades' },
     { key: '/personas', icon: <TeamOutlined />, label: 'Personas' },
